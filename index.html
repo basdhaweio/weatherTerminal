@@ -32,7 +32,7 @@
     --sans: 'DM Sans', sans-serif;
   }
 
-  html { font-size: 14px; }
+  html { font-size: 15px; }
   body {
     background: var(--bg);
     color: var(--text);
@@ -47,17 +47,17 @@
     background: rgba(9,11,15,0.95);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border);
-    padding: 10px 20px;
+    padding: 11px 20px;
     display: flex; align-items: center; gap: 12px;
     flex-wrap: wrap;
   }
   .hdr-logo {
-    font-family: var(--mono); font-size: 10px;
+    font-family: var(--mono); font-size: 11px;
     letter-spacing: 0.25em; color: var(--gold);
     text-transform: uppercase; white-space: nowrap;
   }
   .hdr-logo span { color: var(--muted2); }
-  .hdr-sep { color: var(--muted); font-size: 12px; }
+  .hdr-sep { color: var(--muted); font-size: 13px; }
   .hdr-loc {
     display: flex; align-items: center; gap: 8px; flex: 1;
   }
@@ -67,23 +67,23 @@
   .hdr-input {
     background: var(--bg3); border: 1px solid var(--border2);
     border-radius: 4px; color: var(--text);
-    font-family: var(--mono); font-size: 10px;
-    padding: 4px 7px; width: 90px; outline: none;
+    font-family: var(--mono); font-size: 11px;
+    padding: 5px 8px; width: 100px; outline: none;
     transition: border-color 0.2s;
   }
   .hdr-input:focus { border-color: var(--gold); }
   .hdr-btn {
     background: var(--bg3); border: 1px solid var(--border2);
     border-radius: 4px; color: var(--muted2);
-    font-family: var(--mono); font-size: 9px;
-    padding: 4px 10px; cursor: pointer; letter-spacing: 0.1em;
+    font-family: var(--mono); font-size: 10px;
+    padding: 5px 11px; cursor: pointer; letter-spacing: 0.1em;
     text-transform: uppercase; transition: all 0.2s; white-space: nowrap;
   }
   .hdr-btn:hover { border-color: var(--gold); color: var(--gold); }
   .hdr-btn.active { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
   .hdr-status {
     display: flex; align-items: center; gap: 6px;
-    font-family: var(--mono); font-size: 9px;
+    font-family: var(--mono); font-size: 10px;
     color: var(--muted2); letter-spacing: 0.1em;
     text-transform: uppercase; margin-left: auto;
     white-space: nowrap;
@@ -105,8 +105,8 @@
 
   /* ── SECTION LABELS ── */
   .sec-label {
-    font-family: var(--mono); font-size: 8px; letter-spacing: 0.3em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--muted2); margin-bottom: 8px;
     display: flex; align-items: center; gap: 8px;
   }
   .sec-label::after {
@@ -116,11 +116,11 @@
   /* ── CARDS ── */
   .card {
     background: var(--bg2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px;
+    border-radius: 8px; padding: 16px;
   }
   .card-label {
-    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted2); margin-bottom: 12px;
   }
 
   /* ── HERO ROW ── */
@@ -132,24 +132,24 @@
     color: #fff; line-height: 1; letter-spacing: -3px;
   }
   .temp-unit { font-size: 24px; color: var(--muted2); vertical-align: super; letter-spacing: 0; }
-  .temp-cond { font-size: 12px; color: var(--muted2); margin-top: 5px; font-style: italic; }
-  .temp-feels { font-family: var(--mono); font-size: 10px; color: var(--muted2); margin-top: 3px; }
+  .temp-cond { font-size: 13px; color: var(--muted2); margin-top: 5px; font-style: italic; }
+  .temp-feels { font-family: var(--mono); font-size: 11px; color: var(--muted2); margin-top: 3px; }
   .temp-range {
     display: flex; gap: 14px; margin-top: 10px;
     padding-top: 10px; border-top: 1px solid var(--border);
   }
-  .t-h { font-family: var(--mono); font-size: 11px; color: var(--ember); }
-  .t-l { font-family: var(--mono); font-size: 11px; color: var(--sky); }
+  .t-h { font-family: var(--mono); font-size: 12px; color: var(--ember); }
+  .t-l { font-family: var(--mono); font-size: 12px; color: var(--sky); }
 
   /* Metrics card */
   .metric-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 0; border-bottom: 1px solid var(--border);
-    font-size: 11px;
+    padding: 7px 0; border-bottom: 1px solid var(--border);
+    font-size: 12px;
   }
   .metric-row:last-child { border-bottom: none; }
   .mk { color: var(--muted2); }
-  .mv { font-family: var(--mono); font-size: 10px; font-weight: 700; }
+  .mv { font-family: var(--mono); font-size: 11px; font-weight: 700; }
   .mv.g { color: var(--green); }
   .mv.w { color: var(--gold); }
   .mv.s { color: var(--sky); }
@@ -158,29 +158,29 @@
   /* Timeline card */
   .tl-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 3.5px 6px; border-radius: 4px; font-size: 10px;
+    padding: 4.5px 7px; border-radius: 4px; font-size: 11px;
   }
   .tl-row.dim { color: var(--muted2); font-style: italic; }
   .tl-row.hi { background: rgba(200,151,74,0.1); color: var(--gold); }
   .tl-row.lo { background: rgba(79,195,247,0.08); color: var(--sky); }
   .tl-row.mid { color: var(--text); }
-  .tl-val { font-family: var(--mono); font-size: 10px; font-weight: 700; }
+  .tl-val { font-family: var(--mono); font-size: 11px; font-weight: 700; }
 
   /* Lunar card */
-  .lunar-phase-name { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 3px; }
-  .lunar-illum { font-family: var(--mono); font-size: 10px; color: var(--muted2); }
+  .lunar-phase-name { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 3px; }
+  .lunar-illum { font-family: var(--mono); font-size: 11px; color: var(--muted2); }
   .lunar-bar-wrap { margin: 10px 0; height: 3px; background: var(--bg3); border-radius: 2px; }
   .lunar-bar { height: 3px; background: var(--sky); border-radius: 2px; transition: width 0.5s; }
-  .lunar-next { font-size: 10px; color: var(--muted2); margin-top: 8px; }
-  .lunar-times { display: flex; justify-content: space-between; margin-top: 6px; font-family: var(--mono); font-size: 10px; color: var(--muted2); }
+  .lunar-next { font-size: 11px; color: var(--muted2); margin-top: 8px; }
+  .lunar-times { display: flex; justify-content: space-between; margin-top: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted2); }
 
   /* ── CHARTS ROW ── */
   .charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
-  .chart-title { font-size: 12px; font-weight: 500; color: #fff; margin-bottom: 2px; }
-  .chart-sub { font-size: 10px; color: var(--muted2); margin-bottom: 10px; font-style: italic; }
+  .chart-title { font-size: 13px; font-weight: 500; color: #fff; margin-bottom: 2px; }
+  .chart-sub { font-size: 11px; color: var(--muted2); margin-bottom: 10px; font-style: italic; }
   .chart-wrap { position: relative; width: 100%; }
   .legend-row { display: flex; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted2); }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted2); }
   .legend-swatch { width: 16px; height: 2px; border-radius: 1px; flex-shrink: 0; }
   .legend-swatch.dashed { background: none; border-top: 2px dashed; }
 
@@ -188,56 +188,56 @@
   .forecast-row { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-top: 10px; }
   .fc-day {
     background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
-    padding: 8px 6px; text-align: center;
+    padding: 9px 6px; text-align: center;
   }
-  .fc-dow { font-family: var(--mono); font-size: 8px; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; }
-  .fc-icon { font-size: 18px; margin: 4px 0; }
-  .fc-hi { font-family: var(--mono); font-size: 11px; color: var(--ember); }
-  .fc-lo { font-family: var(--mono); font-size: 10px; color: var(--sky); }
-  .fc-pop { font-family: var(--mono); font-size: 9px; color: var(--sky); margin-top: 3px; }
+  .fc-dow { font-family: var(--mono); font-size: 9px; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; }
+  .fc-icon { font-size: 20px; margin: 5px 0; }
+  .fc-hi { font-family: var(--mono); font-size: 12px; color: var(--ember); }
+  .fc-lo { font-family: var(--mono); font-size: 11px; color: var(--sky); }
+  .fc-pop { font-family: var(--mono); font-size: 10px; color: var(--sky); margin-top: 3px; }
 
   /* Donut side panel */
   .donut-panel { display: flex; flex-direction: column; }
-  .donut-legend { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
-  .dl-item { display: flex; align-items: center; gap: 7px; font-size: 10px; color: var(--muted2); }
-  .dl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .donut-legend { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+  .dl-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--muted2); }
+  .dl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dl-label { flex: 1; }
-  .dl-val { font-family: var(--mono); font-size: 10px; }
+  .dl-val { font-family: var(--mono); font-size: 11px; }
   .solar-decl {
     margin-top: 12px; padding: 10px; background: var(--gold-dim);
     border: 1px solid rgba(200,151,74,0.2); border-radius: 6px;
   }
-  .sd-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
+  .sd-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
   .sd-val { font-family: var(--mono); font-size: 22px; font-weight: 700; color: #fff; }
-  .sd-sub { font-size: 10px; color: var(--muted2); margin-top: 2px; font-style: italic; }
+  .sd-sub { font-size: 11px; color: var(--muted2); margin-top: 2px; font-style: italic; }
 
   /* ── REGIONAL ROW ── */
   .regional-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
 
   /* Pressure trend */
   .pressure-big { font-family: var(--mono); font-size: 28px; font-weight: 700; color: #fff; line-height: 1; }
-  .pressure-unit { font-size: 12px; color: var(--muted2); }
-  .pressure-trend { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 11px; }
+  .pressure-unit { font-size: 13px; color: var(--muted2); }
+  .pressure-trend { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; }
   .trend-arrow { font-size: 16px; }
   .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
   .kpi-box {
     background: var(--bg3); border: 1px solid var(--border);
-    border-radius: 6px; padding: 8px 10px;
+    border-radius: 6px; padding: 9px 10px;
   }
-  .kpi-l { font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
-  .kpi-v { font-family: var(--mono); font-size: 16px; font-weight: 700; margin-top: 2px; }
+  .kpi-l { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+  .kpi-v { font-family: var(--mono); font-size: 16px; font-weight: 700; margin-top: 3px; }
 
   /* Alerts */
   .alert-strip {
-    padding: 8px 10px; border-radius: 6px; margin-bottom: 6px;
+    padding: 9px 11px; border-radius: 6px; margin-bottom: 6px;
     border-left: 3px solid;
   }
   .alert-strip.warn { background: rgba(200,151,74,0.08); border-color: var(--gold); }
   .alert-strip.watch { background: rgba(252,129,74,0.08); border-color: var(--ember); }
   .alert-strip.advisory { background: rgba(79,195,247,0.06); border-color: var(--sky); }
   .alert-strip.none { background: var(--green-dim); border-color: var(--green); }
-  .alert-title { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-  .alert-body { font-size: 10px; color: var(--muted2); margin-top: 3px; line-height: 1.5; }
+  .alert-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .alert-body { font-size: 11px; color: var(--muted2); margin-top: 4px; line-height: 1.6; }
 
   /* ── MACRO ROW ── */
   .afd-panel {
@@ -246,7 +246,7 @@
     border-radius: 8px; padding: 16px;
   }
   .afd-text {
-    font-size: 11px; line-height: 1.8; color: #8EA0B0;
+    font-size: 12px; line-height: 1.85; color: #8EA0B0;
     max-height: 200px; overflow-y: auto;
     font-family: var(--sans);
   }
@@ -258,18 +258,15 @@
 
   /* Kp gauge */
   .kp-big { font-family: var(--mono); font-size: 52px; font-weight: 700; line-height: 1; color: #fff; }
-  .kp-scale-bar {
-    display: flex; gap: 2px; margin: 8px 0;
-  }
+  .kp-scale-bar { display: flex; gap: 2px; margin: 8px 0; }
   .kp-seg {
     flex: 1; height: 4px; border-radius: 2px;
-    background: var(--bg3);
-    transition: background 0.3s;
+    background: var(--bg3); transition: background 0.3s;
   }
   .kp-seg.active { background: var(--green); }
   .kp-seg.active.moderate { background: var(--gold); }
   .kp-seg.active.storm { background: var(--red); }
-  .kp-label { font-size: 10px; color: var(--muted2); }
+  .kp-label { font-size: 11px; color: var(--muted2); }
 
   /* Solar wind gauges */
   .sw-gauge-row { display: flex; flex-direction: column; gap: 10px; }
@@ -277,47 +274,47 @@
     background: var(--bg3); border: 1px solid var(--border);
     border-radius: 6px; padding: 10px;
   }
-  .sw-g-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
-  .sw-g-val { font-family: var(--mono); font-size: 20px; font-weight: 700; }
-  .sw-g-unit { font-size: 10px; color: var(--muted2); margin-left: 4px; }
+  .sw-g-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; }
+  .sw-g-val { font-family: var(--mono); font-size: 22px; font-weight: 700; }
+  .sw-g-unit { font-size: 11px; color: var(--muted2); margin-left: 4px; }
   .sw-g-bar-wrap { margin-top: 6px; height: 3px; background: var(--bg); border-radius: 2px; }
   .sw-g-bar { height: 3px; border-radius: 2px; transition: width 0.5s; }
-  .bz-indicator { font-size: 10px; margin-top: 4px; }
+  .bz-indicator { font-size: 11px; margin-top: 5px; }
 
   /* Flare log */
   .flare-row {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 5px 0; border-bottom: 1px solid var(--border);
-    font-size: 10px;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+    font-size: 11px;
   }
   .flare-row:last-child { border-bottom: none; }
-  .flare-class { font-family: var(--mono); font-weight: 700; font-size: 13px; }
+  .flare-class { font-family: var(--mono); font-weight: 700; font-size: 14px; }
   .flare-class.X { color: var(--red); }
   .flare-class.M { color: var(--ember); }
   .flare-class.C { color: var(--gold); }
   .flare-class.B { color: var(--sky); }
   .flare-class.A { color: var(--muted2); }
-  .flare-time { font-family: var(--mono); font-size: 9px; color: var(--muted2); }
+  .flare-time { font-family: var(--mono); font-size: 10px; color: var(--muted2); }
 
   /* G/S/R scale badges */
   .scale-badges { display: flex; flex-direction: column; gap: 6px; }
   .scale-badge {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 7px 10px; border-radius: 6px; background: var(--bg3);
+    padding: 8px 11px; border-radius: 6px; background: var(--bg3);
     border: 1px solid var(--border);
   }
-  .sb-name { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; }
-  .sb-val { font-family: var(--mono); font-size: 16px; font-weight: 700; }
-  .sb-desc { font-size: 9px; color: var(--muted2); margin-top: 1px; }
+  .sb-name { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; }
+  .sb-val { font-family: var(--mono); font-size: 18px; font-weight: 700; }
+  .sb-desc { font-size: 10px; color: var(--muted2); margin-top: 2px; }
   .sb-active { border-color: var(--red) !important; background: rgba(252,129,129,0.06) !important; }
 
   /* ── LOADING & ERROR STATES ── */
-  .loading { color: var(--muted); font-family: var(--mono); font-size: 10px; }
+  .loading { color: var(--muted2); font-family: var(--mono); font-size: 11px; }
   .loading::after { content: '...'; animation: dots 1.5s infinite; }
   @keyframes dots {
     0%,20% { content: '.'; } 40%,60% { content: '..'; } 80%,100% { content: '...'; }
   }
-  .err { color: var(--muted); font-family: var(--mono); font-size: 10px; font-style: italic; }
+  .err { color: var(--muted2); font-family: var(--mono); font-size: 11px; font-style: italic; }
   .placeholder { color: var(--muted); font-family: var(--mono); font-size: 18px; }
 
   /* ── FOOTER ── */
@@ -494,27 +491,55 @@
   <div class="sec-label">Scale 02 — Regional Patterns</div>
   <div class="regional-row">
 
-    <!-- Water Level Chart -->
+    <!-- NDBC Buoy Data -->
     <div class="card">
-      <div class="chart-title">Great Lakes Water Level — <span id="wl-station-name">Lake Ontario / Toronto</span></div>
-      <div class="chart-sub" id="wl-sub">NOAA station observed levels (IGLD datum)</div>
-      <div class="legend-row">
-        <div class="legend-item"><div class="legend-swatch" style="background:var(--sky);"></div>Water Level (m)</div>
+      <div class="chart-title">NDBC Marine Buoy — <span id="buoy-station-name">Nearest Station</span></div>
+      <div class="chart-sub" id="buoy-sub">NOAA National Data Buoy Center · Real-time observations</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+        <div class="kpi-box">
+          <div class="kpi-l">Water Temp</div>
+          <div class="kpi-v" id="buoy-wtmp" style="color:var(--sky);">--</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-l">Wave Height</div>
+          <div class="kpi-v" id="buoy-wvht" style="color:var(--ember);">--</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-l">Wave Period</div>
+          <div class="kpi-v" id="buoy-dpd">--</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-l">Wave Dir.</div>
+          <div class="kpi-v" id="buoy-mwd">--</div>
+        </div>
       </div>
-      <div class="chart-wrap" style="height:160px;"><canvas id="wl-chart" role="img" aria-label="Great Lakes water level chart, last 24 hours"></canvas></div>
-      <div style="display:flex;gap:14px;margin-top:10px;">
-        <div class="kpi-box" style="flex:1;">
-          <div class="kpi-l">Current Level</div>
-          <div class="kpi-v" id="wl-current" style="color:var(--sky);">--</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+        <div class="kpi-box">
+          <div class="kpi-l">Air Temp</div>
+          <div class="kpi-v" id="buoy-atmp">--</div>
         </div>
-        <div class="kpi-box" style="flex:1;">
-          <div class="kpi-l">24h Change</div>
-          <div class="kpi-v" id="wl-change">--</div>
+        <div class="kpi-box">
+          <div class="kpi-l">Pressure</div>
+          <div class="kpi-v" id="buoy-pres">--</div>
         </div>
-        <div class="kpi-box" style="flex:1;">
-          <div class="kpi-l">Datum</div>
-          <div class="kpi-v" style="color:var(--muted2);font-size:11px;">IGLD 1985</div>
+        <div class="kpi-box">
+          <div class="kpi-l">Wind</div>
+          <div class="kpi-v" id="buoy-wind">--</div>
         </div>
+        <div class="kpi-box">
+          <div class="kpi-l">Gust</div>
+          <div class="kpi-v" id="buoy-gust">--</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-swatch" style="background:var(--sky);"></div>Water Temp</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:var(--ember);"></div>Wave Height</div>
+      </div>
+      <div class="chart-wrap" style="height:140px;"><canvas id="buoy-chart" role="img" aria-label="Buoy water temperature and wave height over last 24 readings"></canvas></div>
+      <div style="margin-top:8px;padding:8px 10px;background:var(--bg3);border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Station</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted2);" id="buoy-coords">--</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted2);" id="buoy-observed">--</div>
       </div>
     </div>
 
@@ -662,14 +687,42 @@ const STATE = {
   refreshTimer: null,
 };
 
-// Great Lakes NOAA stations (station id → label)
-const GL_STATIONS = {
-  '9052058': { name: 'Toronto / Lake Ontario', lat: 43.67, lng: -79.38 },
-  '9063079': { name: 'Cleveland / Lake Erie', lat: 41.54, lng: -81.63 },
-  '9075065': { name: 'Chicago / Lake Michigan', lat: 41.73, lng: -87.60 },
-  '9044049': { name: 'Detroit / Lake St. Clair', lat: 42.33, lng: -83.05 },
-  '9076070': { name: 'Sault Ste. Marie / Lake Superior', lat: 46.50, lng: -84.35 },
-};
+// NDBC buoy stations — lat/lng used for proximity lookup
+// Mix of offshore buoys and coastal C-MAN stations for broad US/Canada coverage
+const NDBC_STATIONS = [
+  // Gulf of Mexico / Florida
+  { id: 'SAPF1', name: 'St. Petersburg, Tampa Bay', lat: 27.761, lng: -82.627 },
+  { id: '42099', name: 'Offshore St. Pete, Gulf', lat: 27.352, lng: -84.275 },
+  { id: '42036', name: 'West Tampa, Gulf', lat: 28.500, lng: -84.505 },
+  { id: '42003', name: 'Eastern Gulf of Mexico', lat: 25.009, lng: -85.906 },
+  { id: 'FWYF1', name: 'Fowey Rocks, FL', lat: 25.590, lng: -80.098 },
+  { id: 'SMKF1', name: 'Sombrero Key, FL', lat: 24.627, lng: -81.113 },
+  // Atlantic Southeast
+  { id: '41013', name: 'Frying Pan Shoals, NC', lat: 33.436, lng: -77.743 },
+  { id: '41025', name: 'Diamond Shoals, NC', lat: 35.006, lng: -75.402 },
+  { id: 'MROS1', name: 'Charleston, SC', lat: 32.782, lng: -79.984 },
+  // Atlantic Northeast
+  { id: '44025', name: 'Long Island, NY', lat: 40.251, lng: -73.166 },
+  { id: '44013', name: 'Boston, MA', lat: 42.346, lng: -70.651 },
+  { id: '44005', name: 'Gulf of Maine', lat: 43.204, lng: -69.128 },
+  // Great Lakes
+  { id: '45007', name: 'Lake Michigan South', lat: 42.674, lng: -87.026 },
+  { id: '45005', name: 'Lake Superior West', lat: 46.899, lng: -91.923 },
+  { id: '45012', name: 'Lake Ontario East', lat: 43.613, lng: -76.727 },
+  // Pacific
+  { id: '46221', name: 'Santa Monica Bay, CA', lat: 33.855, lng: -118.634 },
+  { id: '46026', name: 'San Francisco, CA', lat: 37.759, lng: -122.833 },
+  { id: '46041', name: 'Cape Elizabeth, WA', lat: 47.353, lng: -124.731 },
+];
+
+function nearestNdbcStation(lat, lng) {
+  let best = NDBC_STATIONS[0], bestDist = Infinity;
+  for (const st of NDBC_STATIONS) {
+    const d = Math.sqrt((lat - st.lat)**2 + (lng - st.lng)**2);
+    if (d < bestDist) { bestDist = d; best = st; }
+  }
+  return best;
+}
 
 // ═══════════════════════════════════════════════════════════
 //  UTILITY
@@ -717,14 +770,6 @@ function decimalHours(iso1, iso2) {
   return isNaN(diff) || diff < 0 ? 0 : diff;
 }
 
-function nearestGLStation(lat, lng) {
-  let best = '9052058', bestDist = Infinity;
-  for (const [id, st] of Object.entries(GL_STATIONS)) {
-    const d = Math.sqrt((lat - st.lat)**2 + (lng - st.lng)**2);
-    if (d < bestDist) { bestDist = d; best = id; }
-  }
-  return best;
-}
 
 function wmoIcon(code) {
   const map = {
@@ -883,18 +928,14 @@ async function fetchSolarTimes() {
   return fetchJSON(url);
 }
 
-async function fetchWaterLevel() {
-  const stationId = nearestGLStation(STATE.lat, STATE.lng);
-  const today = new Date();
-  const yesterday = new Date(today - 86400000);
-  const fmt = d => d.toISOString().slice(0,10).replace(/-/g,'');
-  const url = [
-    `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter`,
-    `?station=${stationId}&product=water_level&datum=IGLD`,
-    `&begin_date=${fmt(yesterday)}&end_date=${fmt(today)}`,
-    `&time_zone=GMT&units=metric&format=json&application=weather_dashboard`
-  ].join('');
-  return { data: await fetchJSON(url), stationId };
+async function fetchNdbc() {
+  const st = nearestNdbcStation(STATE.lat, STATE.lng);
+  // NDBC realtime2 txt files: space-delimited, first two rows are headers
+  const url = `https://www.ndbc.noaa.gov/data/realtime2/${st.id}.txt`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`NDBC ${st.id}: HTTP ${resp.status}`);
+  const text = await resp.text();
+  return { text, station: st };
 }
 
 async function fetchKp() {
@@ -1161,48 +1202,120 @@ function renderMoon() {
   set('moon-set', '--');
 }
 
-function renderWaterLevel(result) {
-  const { data, stationId } = result;
-  const st = GL_STATIONS[stationId];
-  set('wl-station-name', st ? st.name : 'Water Level Station');
 
-  if (!data.data || !data.data.length) {
-    set('wl-current', 'No data');
+function parseNdbcTxt(text) {
+  // NDBC stdmet format:
+  // Row 0: column names (#YY  MM DD hh mm WDIR WSPD GST  WVHT   DPD   APD MWD   PRES  ATMP  WTMP  DEWP  VIS PTDY  TIDE)
+  // Row 1: units
+  // Rows 2+: data, most recent LAST
+  const lines = text.trim().split('\n').filter(l => l.trim());
+  if (lines.length < 3) return null;
+
+  const headers = lines[0].replace(/^#/, '').trim().split(/\s+/);
+  const rows = [];
+  for (let i = 2; i < lines.length; i++) {
+    const vals = lines[i].trim().split(/\s+/);
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h] = vals[idx]; });
+    rows.push(obj);
+  }
+  return rows;
+}
+
+function ndbcVal(v) {
+  // NDBC uses 99, 999, 9999 etc. as missing value markers
+  const n = parseFloat(v);
+  if (isNaN(n)) return null;
+  if (v === '99.0' || v === '99' || v === '999' || v === '9999' || v === '99.00'
+    || n >= 999) return null;
+  return n;
+}
+
+function renderNdbc(result) {
+  const { text, station } = result;
+  set('buoy-station-name', station.name);
+  set('buoy-coords', `${station.lat}°N ${Math.abs(station.lng)}°W`);
+
+  const rows = parseNdbcTxt(text);
+  if (!rows || !rows.length) {
+    set('buoy-wtmp', 'No data');
     return;
   }
 
-  const readings = data.data.map(r => parseFloat(r.v)).filter(v => !isNaN(v));
-  const labels = data.data.map(r => r.t.slice(11,16));
+  // Most recent reading
+  const latest = rows[rows.length - 1];
+  const fmt = (v, unit, dec=1) => {
+    const n = ndbcVal(v);
+    return n === null ? '--' : n.toFixed(dec) + unit;
+  };
+  const fmtTemp = (v) => {
+    const n = ndbcVal(v);
+    if (n === null) return '--';
+    return STATE.useFahrenheit ? (n*9/5+32).toFixed(1)+'°F' : n.toFixed(1)+'°C';
+  };
 
-  set('wl-current', readings[readings.length-1].toFixed(2) + ' m');
-  const change = readings[readings.length-1] - readings[0];
-  const changeEl = $('wl-change');
-  if (changeEl) {
-    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + ' m';
-    changeEl.className = 'kpi-v ' + (Math.abs(change) < 0.05 ? '' : change > 0 ? 'e' : 's');
+  set('buoy-wtmp', fmtTemp(latest.WTMP));
+  set('buoy-atmp', fmtTemp(latest.ATMP));
+  set('buoy-wvht', fmt(latest.WVHT, 'm'));
+  set('buoy-dpd', fmt(latest.DPD, 's', 0));
+  set('buoy-pres', fmt(latest.PRES, ' hPa', 1));
+
+  // Wind: speed + direction
+  const wspd = ndbcVal(latest.WSPD);
+  const wdir = ndbcVal(latest.WDIR);
+  set('buoy-wind', wspd !== null ? (wdir !== null ? windDir(wdir)+' ' : '') + wspd.toFixed(1)+' m/s' : '--');
+  set('buoy-gust', fmt(latest.GST, ' m/s'));
+
+  // Wave direction
+  const mwd = ndbcVal(latest.MWD);
+  set('buoy-mwd', mwd !== null ? windDir(mwd) : '--');
+
+  // Observation time
+  const yr = latest['#YY'] || latest.YY || '??';
+  const mo = latest.MM, dy = latest.DD, hr = latest.hh, mn = latest.mm;
+  set('buoy-observed', `Obs: ${mo}/${dy} ${hr}:${mn} UTC`);
+
+  // Build last-24 chart from up to 24 most recent rows
+  const chartRows = rows.slice(-24);
+  const labels = chartRows.map(r => `${r.hh}:${r.mm}`);
+  const wtmps = chartRows.map(r => ndbcVal(r.WTMP));
+  const wvhts = chartRows.map(r => ndbcVal(r.WVHT));
+
+  destroyChart('buoy');
+  const ctx = $('buoy-chart');
+  if (!ctx) return;
+
+  const datasets = [];
+  if (wtmps.some(v => v !== null)) {
+    datasets.push({
+      label: 'Water Temp',
+      data: STATE.useFahrenheit ? wtmps.map(v => v === null ? null : +(v*9/5+32).toFixed(1)) : wtmps,
+      borderColor: '#4FC3F7', backgroundColor: 'rgba(79,195,247,0.06)',
+      fill: true, tension: 0.3, borderWidth: 2, pointRadius: 0, yAxisID: 'y',
+      spanGaps: true,
+    });
+  }
+  if (wvhts.some(v => v !== null)) {
+    datasets.push({
+      label: 'Wave Height (m)',
+      data: wvhts,
+      borderColor: '#FF6B35', backgroundColor: 'rgba(255,107,53,0.06)',
+      fill: true, tension: 0.3, borderWidth: 2, pointRadius: 0, yAxisID: 'y1',
+      spanGaps: true,
+    });
   }
 
-  destroyChart('wl');
-  const ctx = $('wl-chart');
-  if (!ctx) return;
-  STATE.charts.wl = new Chart(ctx, {
+  STATE.charts.buoy = new Chart(ctx, {
     type: 'line',
-    data: {
-      labels: labels.filter((_,i) => i % 4 === 0),
-      datasets: [{
-        label: 'Water Level (m)',
-        data: readings.filter((_,i) => i % 4 === 0),
-        borderColor: '#4FC3F7',
-        backgroundColor: 'rgba(79,195,247,0.06)',
-        fill: true, tension: 0.3, borderWidth: 1.5, pointRadius: 0,
-      }]
-    },
+    data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: { legend: { display: false } },
       scales: {
-        x: { grid: { color: CHART_DEFAULTS.gridColor }, ticks: { font: { family: CHART_DEFAULTS.mono, size: 8 }, color: CHART_DEFAULTS.tickColor, maxTicksLimit: 6 } },
-        y: { grid: { color: CHART_DEFAULTS.gridColor }, ticks: { font: { family: CHART_DEFAULTS.mono, size: 8 }, color: '#4FC3F7', callback: v => v.toFixed(1) + 'm' } }
+        x: { grid: { color: CHART_DEFAULTS.gridColor }, ticks: { font: { family: CHART_DEFAULTS.mono, size: 8 }, color: CHART_DEFAULTS.tickColor, maxTicksLimit: 8 } },
+        y: { position: 'left', grid: { color: CHART_DEFAULTS.gridColor }, ticks: { font: { family: CHART_DEFAULTS.mono, size: 8 }, color: '#4FC3F7', callback: v => v.toFixed(1)+(STATE.useFahrenheit?'°F':'°C') } },
+        y1: { position: 'right', min: 0, grid: { drawOnChartArea: false }, ticks: { font: { family: CHART_DEFAULTS.mono, size: 8 }, color: '#FF6B35', callback: v => v.toFixed(1)+'m' } },
       }
     }
   });
@@ -1412,14 +1525,14 @@ async function loadAll() {
   const results = await Promise.allSettled([
     fetchWeather(),
     fetchSolarTimes(),
-    fetchWaterLevel(),
+    fetchNdbc(),
     fetchKp(),
     fetchSolarWind(),
     fetchFlares(),
     fetchSwpcAlerts(),
   ]);
 
-  const [weather, solar, waterLevel, kp, solarWind, flares, swpcAlerts] = results;
+  const [weather, solar, ndbc, kp, solarWind, flares, swpcAlerts] = results;
 
   if (weather.status === 'fulfilled') {
     try { renderWeather(weather.value); } catch(e) { console.error('Weather render:', e); }
@@ -1432,11 +1545,12 @@ async function loadAll() {
     try { renderSolarTimes(solar.value); } catch(e) { console.error('Solar render:', e); }
   }
 
-  if (waterLevel.status === 'fulfilled') {
-    try { renderWaterLevel(waterLevel.value); } catch(e) { console.error('WL render:', e); }
+  if (ndbc.status === 'fulfilled') {
+    try { renderNdbc(ndbc.value); } catch(e) { console.error('NDBC render:', e); }
   } else {
-    const p = $('wl-chart');
-    if (p) p.closest('.card').querySelector('.chart-sub').textContent = 'Water level data temporarily unavailable';
+    console.error('NDBC fetch failed:', ndbc.reason);
+    set('buoy-station-name', 'Unavailable');
+    set('buoy-wtmp', '--');
   }
 
   if (kp.status === 'fulfilled') {
