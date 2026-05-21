@@ -230,38 +230,95 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
   <div class="sec-label">Scale 01 — Hyperlocal Conditions</div>
   <div class="hero-row">
 
-    <div class="card">
-      <div class="card-lbl">Current Conditions</div>
-      <div class="temp-wrap">
-        <div class="temp-num" id="cur-temp">--</div>
-        <div class="temp-deg" id="cur-unit">°F</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-lbl">Current Conditions</div>
+        <div class="temp-wrap">
+          <div class="temp-num" id="cur-temp">--</div>
+          <div class="temp-deg" id="cur-unit">°F</div>
+        </div>
+        <div class="temp-cond" id="cur-cond">Loading…</div>
+        <div class="temp-feels">Feels <span id="cur-feels">--</span> · Dew <span id="cur-dew">--</span></div>
+        <div class="temp-bar-wrap">
+          <div class="temp-bar-labels">
+            <span class="temp-bar-lo">L <span id="lo-temp">--</span></span>
+            <span class="temp-bar-hi">H <span id="hi-temp">--</span></span>
+          </div>
+          <div class="temp-bar-track">
+            <div class="temp-bar-fill" id="bar-fill" style="left:0%;width:0%;"></div>
+            <div class="temp-bar-cursor" id="bar-cursor" style="left:50%;"></div>
+          </div>
+          <div class="temp-bar-now">Now: <span id="bar-now-label">--</span></div>
+        </div>
       </div>
-      <div class="temp-cond" id="cur-cond">Loading…</div>
-      <div class="temp-feels">Feels <span id="cur-feels">--</span> · Dew <span id="cur-dew">--</span></div>
-      <div class="temp-bar-wrap">
-        <div class="temp-bar-labels">
-          <span class="temp-bar-lo">L <span id="lo-temp">--</span></span>
-          <span class="temp-bar-hi">H <span id="hi-temp">--</span></span>
+      <div class="card" style="flex:1">
+        <div class="card-lbl">Today's Outlook</div>
+        <div style="position:relative;width:100%;height:90px;margin-bottom:12px"><canvas id="temp-sparkline"></canvas></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div class="kpi-box"><div class="kpi-l">UV Max</div><div class="kpi-v w" id="ov-uvmax">--</div></div>
+          <div class="kpi-box"><div class="kpi-l">Precip Prob</div><div class="kpi-v s" id="ov-pop">--</div></div>
+          <div class="kpi-box"><div class="kpi-l">Wind Max</div><div class="kpi-v" id="ov-windmax">--</div></div>
+          <div class="kpi-box"><div class="kpi-l">Sunshine</div><div class="kpi-v" id="ov-sunshine">--</div></div>
         </div>
-        <div class="temp-bar-track">
-          <div class="temp-bar-fill" id="bar-fill" style="left:0%;width:0%;"></div>
-          <div class="temp-bar-cursor" id="bar-cursor" style="left:50%;"></div>
+        <div style="padding-top:12px;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:14px">
+            <canvas id="wind-compass" width="76" height="76" style="flex-shrink:0"></canvas>
+            <div style="flex:1">
+              <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:5px">Wind</div>
+              <div style="font-size:15px;font-weight:500;color:#fff" id="wc-dir">--</div>
+              <div style="font-family:var(--mono);font-size:12px;color:var(--sky);margin-top:2px" id="wc-detail">--</div>
+              <div style="font-size:11px;color:var(--muted2);margin-top:2px" id="wc-beaufort">--</div>
+            </div>
+          </div>
         </div>
-        <div class="temp-bar-now">Now: <span id="bar-now-label">--</span></div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-lbl">Atmosphere</div>
-      <div class="metric-row"><span class="mk">Humidity</span><span class="mv s" id="met-hum">--</span></div>
-      <div class="metric-row"><span class="mk">Wet Bulb</span><span class="mv" id="met-wetbulb">--</span></div>
-      <div class="metric-row"><span class="mk">Pressure</span><span class="mv" id="met-pres">--</span></div>
-      <div class="metric-row"><span class="mk">Wind</span><span class="mv" id="met-wind">--</span></div>
-      <div class="metric-row"><span class="mk">Gusts</span><span class="mv" id="met-gust">--</span></div>
-      <div class="metric-row"><span class="mk">Visibility</span><span class="mv" id="met-vis">--</span></div>
-      <div class="metric-row"><span class="mk">UV Index</span><span class="mv w" id="met-uv">--</span></div>
-      <div class="metric-row"><span class="mk">Cloud Cover</span><span class="mv" id="met-cloud">--</span></div>
-      <div class="metric-row" style="border:none"><span class="mk">Solar Rad.</span><span class="mv" id="met-rad">--</span></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="card-lbl">Atmosphere</div>
+        <div class="metric-row"><span class="mk">Humidity</span><span class="mv s" id="met-hum">--</span></div>
+        <div class="metric-row"><span class="mk">Wet Bulb</span><span class="mv" id="met-wetbulb">--</span></div>
+        <div class="metric-row"><span class="mk">Pressure</span><span class="mv" id="met-pres">--</span></div>
+        <div class="metric-row"><span class="mk">Wind</span><span class="mv" id="met-wind">--</span></div>
+        <div class="metric-row"><span class="mk">Gusts</span><span class="mv" id="met-gust">--</span></div>
+        <div class="metric-row"><span class="mk">Visibility</span><span class="mv" id="met-vis">--</span></div>
+        <div class="metric-row"><span class="mk">UV Index</span><span class="mv w" id="met-uv">--</span></div>
+        <div class="metric-row"><span class="mk">Cloud Cover</span><span class="mv" id="met-cloud">--</span></div>
+        <div class="metric-row" style="border:none"><span class="mk">Solar Rad.</span><span class="mv" id="met-rad">--</span></div>
+      </div>
+      <div class="card" style="flex:1">
+        <div class="card-lbl">Comfort & Air</div>
+        <div style="margin-bottom:12px">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px">Humidity Comfort</div>
+          <div style="font-size:18px;font-weight:500" id="comfort-label">--</div>
+          <div style="font-size:12px;color:var(--muted2);margin-top:3px" id="comfort-detail">--</div>
+          <div style="margin-top:8px;height:5px;background:linear-gradient(90deg,var(--sky),var(--green),var(--gold),var(--ember),var(--red));border-radius:3px;position:relative">
+            <div id="comfort-cursor" style="position:absolute;top:-3px;width:11px;height:11px;border-radius:50%;background:#fff;border:2px solid var(--bg2);transform:translateX(-50%);left:50%;transition:left 0.4s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--muted2);margin-top:3px"><span>Dry</span><span>Comfortable</span><span>Oppressive</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div class="kpi-box">
+            <div class="kpi-l">Heat Index</div>
+            <div class="kpi-v e" id="cf-heatindex">--</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-l">Dew Spread</div>
+            <div class="kpi-v" id="cf-dewspread">--</div>
+          </div>
+        </div>
+        <div style="padding-top:12px;border-top:1px solid var(--border)">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px">Pressure Tendency</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:#fff" id="cf-pres-mmhg">--</div>
+            <div>
+              <div style="font-size:11px;color:var(--muted2)" id="cf-pres-hpa">-- hPa</div>
+              <div style="font-size:13px;margin-top:2px" id="cf-pres-trend">→ Steady</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -283,6 +340,13 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
         </div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted2)">
           <span>Daily change</span><span style="font-family:var(--mono);font-size:12px" id="tl-daychange">--</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 8px;background:rgba(200,151,74,0.06);border-radius:4px;border:1px solid rgba(200,151,74,0.12)">
+          <span style="font-size:12px;color:var(--muted2)">Solar Declination</span>
+          <div style="text-align:right">
+            <span style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold)" id="tl-solar-decl">--</span>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted2);margin-top:1px" id="tl-solar-decl-note">--</div>
+          </div>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:8px 10px;background:rgba(159,122,234,0.07);border:1px solid rgba(159,122,234,0.15);border-radius:5px">
           <div>
@@ -323,11 +387,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
           <div class="dl-item"><div class="dl-dot" style="background:#37474F"></div><span class="dl-label">Astronomical</span><span class="dl-val" id="dl-astro">--</span></div>
           <div class="dl-item" style="margin-bottom:0"><div class="dl-dot" style="background:#0F1318;border:1px solid var(--border2)"></div><span class="dl-label">Full Night</span><span class="dl-val" id="dl-night">--</span></div>
         </div>
-        <div class="solar-box">
-          <div class="solar-box-lbl">Solar Declination</div>
-          <div class="solar-box-val" id="solar-decl">--</div>
-          <div class="solar-box-sub" id="solar-decl-note">Computing…</div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -668,9 +728,9 @@ async function fetchWeather() {
 }
 
 async function fetchSolar() {
-  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const today = new Date().toISOString().slice(0,10);
-  return fetchJSON(`https://api.sunrise-sunset.org/json?lat=${STATE.lat}&lng=${STATE.lng}&date=${today}&formatted=0&tzid=${tz}`);
+  // Computed directly from orbital mechanics — no external API, no CORS dependency.
+  // Accuracy ±1-2 minutes. Same response shape as sunrise-sunset.org JSON.
+  return computeSolarTimesToday(STATE.lat, STATE.lng, new Date());
 }
 
 // NOAA CO-OPS Tide Predictions — confirmed CORS-open
@@ -813,8 +873,75 @@ function renderWeather(data) {
   const fcRow=$('fc-row'); if(fcRow) fcRow.innerHTML=fc;
 
   const decl = solarDecl(new Date());
-  set('solar-decl', decl.toFixed(2)+'°');
-  set('solar-decl-note', decl>0.5?'Sun in northern hemisphere':decl<-0.5?'Sun in southern hemisphere':'Near celestial equator');
+
+  // ── Today's Outlook card ──
+  set('ov-uvmax', (d.uv_index_max[0]||0).toFixed(1));
+  set('ov-pop', (d.precipitation_probability_max[0]||0)+'%');
+  set('ov-windmax', (d.wind_speed_10m_max[0]*0.539957).toFixed(1)+' kt');
+  const sunshineH = (d.sunshine_duration && d.sunshine_duration[0]) ? (d.sunshine_duration[0]/3600).toFixed(1)+'h' : (d.daylight_duration ? (d.daylight_duration[0]/3600).toFixed(1)+'h est.' : '--');
+  set('ov-sunshine', sunshineH);
+
+  // Temp sparkline (today's hourly from Open-Meteo)
+  {
+    const spLabels=[], spTemps=[];
+    const midnt = new Date(); midnt.setHours(0,0,0,0);
+    const nextMidnt = new Date(midnt.getTime()+86400000);
+    for(let i=0;i<h.time.length;i++){
+      const t=new Date(h.time[i]);
+      if(t>=midnt&&t<nextMidnt){
+        spLabels.push(t.getHours()===0?'12a':t.getHours()===12?'12p':t.getHours()>12?(t.getHours()-12)+'p':t.getHours()+'a');
+        spTemps.push(STATE.useFahrenheit?+toF(h.temperature_2m[i]).toFixed(1):h.temperature_2m[i]);
+      }
+    }
+    destroyChart('sparkline');
+    const sCtx=$('temp-sparkline');
+    if(sCtx&&spTemps.length){
+      STATE.charts.sparkline=new Chart(sCtx,{
+        type:'line',
+        data:{labels:spLabels,datasets:[{data:spTemps,borderColor:'#FF6B35',backgroundColor:'rgba(255,107,53,0.08)',fill:true,tension:0.4,borderWidth:2,pointRadius:0}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y.toFixed(1)}${tUnit()}`}}},
+          scales:{x:{grid:{display:false},ticks:{font:{family:CD.mono,size:8},color:'#4A5568',maxTicksLimit:6}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{font:{family:CD.mono,size:8},color:'#FF6B35',callback:v=>v+(STATE.useFahrenheit?'°F':'°C')}}}}
+      });
+    }
+  }
+
+  // Wind compass canvas
+  drawWindCompass('wind-compass', c.wind_direction_10m, c.wind_speed_10m*0.539957);
+  set('wc-dir', windDir(c.wind_direction_10m)+' wind');
+  set('wc-detail', (c.wind_speed_10m*0.539957).toFixed(1)+' kt gusts '+((c.wind_gusts_10m||0)*0.539957).toFixed(1)+' kt');
+  set('wc-beaufort', beaufort(c.wind_speed_10m));
+
+  // ── Comfort & Air card ──
+  const dewSpreadC = c.temperature_2m - c.dew_point_2m;
+  const cf = dewSpreadComfort(dewSpreadC);
+  set('comfort-label', cf.label);
+  const comfortEl=$('comfort-label'); if(comfortEl) comfortEl.style.color=cf.color;
+  set('comfort-detail', 'Dew spread '+dewSpreadC.toFixed(1)+'°C · '+c.relative_humidity_2m+'% RH');
+  const comfortCursor=$('comfort-cursor');
+  if(comfortCursor){
+    // Map dew spread 0–20°C to comfort 0–100% (0=oppressive, 20=very dry)
+    // Comfortable zone is around 10–16°C spread
+    const pct=Math.max(0,Math.min(100,(dewSpreadC/20)*100));
+    comfortCursor.style.left=pct+'%';
+  }
+
+  // Heat index
+  const tempF=STATE.useFahrenheit?toF(c.temperature_2m):toF(c.temperature_2m);
+  const hiF=heatIndex(tempF, c.relative_humidity_2m);
+  if(hiF!==null){
+    const hiDisp=STATE.useFahrenheit?hiF.toFixed(1)+'°F':((hiF-32)/1.8).toFixed(1)+'°C';
+    set('cf-heatindex', hiDisp);
+    const hiEl=$('cf-heatindex'); if(hiEl) hiEl.style.color=hiF>=103?'var(--red)':hiF>=91?'var(--ember)':'var(--gold)';
+  } else {
+    set('cf-heatindex', 'N/A');
+    const hiEl=$('cf-heatindex'); if(hiEl) hiEl.style.color='var(--muted2)';
+  }
+  set('cf-dewspread', dewSpreadC.toFixed(1)+'°C');
+  set('cf-pres-mmhg', (c.surface_pressure*0.750064).toFixed(0));
+  set('cf-pres-hpa', c.surface_pressure.toFixed(1)+' hPa');
+
+  set('tl-solar-decl', decl.toFixed(2)+'°');
+  set('tl-solar-decl-note', decl>0.5?'☀ N hemisphere':decl<-0.5?'☀ S hemisphere':'⚖ Near equator');
 }
 
 function renderSolar(data) {
@@ -822,15 +949,37 @@ function renderSolar(data) {
   const r = data.results;
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const f = iso => fmtTime(iso, tz);
-  set('tl-astrodawn', f(r.astronomical_twilight_begin));
-  set('tl-nautdawn', f(r.nautical_twilight_begin));
-  set('tl-civdawn', f(r.civil_twilight_begin));
-  set('tl-sunrise', f(r.sunrise));
-  set('tl-noon', f(r.solar_noon));
-  set('tl-sunset', f(r.sunset));
-  set('tl-civdusk', f(r.civil_twilight_end));
-  set('tl-nautdusk', f(r.nautical_twilight_end));
-  set('tl-astrodusk', f(r.astronomical_twilight_end));
+  // Helper: show meaningful label when twilight band doesn't occur
+  // (polar summer = no darkness; polar winter = no sunrise)
+  const noSunrise = !r.sunrise;
+  const noDarkness = !r.astronomical_twilight_begin;
+
+  function fmt(iso, noEventMsg) {
+    if(!iso) return noEventMsg || '--';
+    return f(iso);
+  }
+
+  const noAstroMsg  = noSunrise ? 'Polar night' : (noDarkness ? 'No darkness' : '--');
+  const noNautMsg   = noSunrise ? 'Polar night' : '--';
+  const noCivMsg    = noSunrise ? 'Polar night' : '--';
+  const noRiseMsg   = 'Polar night';
+  const noSetMsg    = 'Midnight sun';
+
+  set('tl-astrodawn', fmt(r.astronomical_twilight_begin, noAstroMsg));
+  set('tl-nautdawn',  fmt(r.nautical_twilight_begin, noNautMsg));
+  set('tl-civdawn',   fmt(r.civil_twilight_begin, noCivMsg));
+  set('tl-sunrise',   fmt(r.sunrise, noRiseMsg));
+  set('tl-noon',      f(r.solar_noon));
+  set('tl-sunset',    fmt(r.sunset, noSetMsg));
+  set('tl-civdusk',   fmt(r.civil_twilight_end, noCivMsg));
+  set('tl-nautdusk',  fmt(r.nautical_twilight_end, noNautMsg));
+  set('tl-astrodusk', fmt(r.astronomical_twilight_end, noAstroMsg));
+
+  // Flag white nights / polar night in the day length row
+  if(noDarkness && !noSunrise) {
+    const dl2 = $('tl-daylength');
+    if(dl2) dl2.title = 'Astronomical twilight never ends — sky stays bright all night';
+  }
   const sr=new Date(r.sunrise), ss=new Date(r.sunset), gh=34*60000;
   set('tl-golden-am', f(new Date(sr-gh))+'–'+f(sr));
   set('tl-golden-pm', f(ss)+'–'+f(new Date(+ss+gh)));
@@ -1375,6 +1524,80 @@ function julianDay(date){
   return Math.floor(365.25*(Yp+4716))+Math.floor(30.6001*(Mp+1))+D+B-1524.5;
 }
 
+
+// ─── Computed solar times — replaces sunrise-sunset.org API ───────────────
+// Jean Meeus "Astronomical Algorithms" Ch. 25 + standard USNO horizon formula
+// Returns same shape as the sunrise-sunset.org JSON response.
+// Accuracy: ±1-2 minutes (sufficient for display purposes)
+function computeSolarTimesToday(lat, lng, date) {
+  const JD = julianDay(date);
+  const T  = (JD - 2451545.0) / 36525;
+
+  // Solar mean longitude, mean anomaly, eccentricity
+  const L0 = normDeg(280.46646 + 36000.76983*T);
+  const M  = normDeg(357.52911 + 35999.05029*T - 0.0001537*T*T);
+  const e  = 0.016708634 - 0.000042037*T;
+  const MR = M * D2R;
+
+  // Equation of center → true longitude → apparent longitude
+  const C = (1.914602 - 0.004817*T - 0.000014*T*T)*Math.sin(MR)
+          + (0.019993 - 0.000101*T)*Math.sin(2*MR)
+          + 0.000289*Math.sin(3*MR);
+  const lon   = L0 + C;
+  const omega = 125.04 - 1934.136*T;
+  const lam   = (lon - 0.00569 - 0.00478*Math.sin(omega*D2R)) * D2R;
+
+  // Declination + obliquity
+  const eps = (23.439291 - 0.013004*T) * D2R;
+  const dec = Math.asin(Math.sin(eps) * Math.sin(lam));
+
+  // Equation of time (minutes → hours)
+  const y = Math.tan(eps/2) ** 2;
+  const L0R = L0 * D2R;
+  const eot_h = ((y*Math.sin(2*L0R) - 2*e*Math.sin(MR)
+                + 4*e*y*Math.sin(MR)*Math.cos(2*L0R)
+                - 0.5*y*y*Math.sin(4*L0R)
+                - 1.25*e*e*Math.sin(2*MR)) * R2D * 4) / 60;
+
+  // Solar noon in UT decimal hours
+  const noonUT = 12 - (lng / 15) - eot_h;
+
+  // Hour angle at a given solar altitude (degrees). Returns null for polar events.
+  const latR = lat * D2R;
+  function H(alt_deg) {
+    const cosH = (Math.sin(alt_deg*D2R) - Math.sin(latR)*Math.sin(dec))
+               / (Math.cos(latR) * Math.cos(dec));
+    if(cosH > 1 || cosH < -1) return null;
+    return Math.acos(cosH) * R2D / 15; // hours from noon
+  }
+
+  // UT decimal hours → ISO 8601 string
+  function iso(utH) {
+    const base = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    return new Date(base.getTime() + utH * 3600000).toISOString();
+  }
+
+  const Hs  = H(-0.833); // sunrise/sunset: sun centre at −0°50′ (refraction + disc)
+  const Hc  = H(-6);
+  const Hn  = H(-12);
+  const Ha  = H(-18);
+
+  return {
+    status: 'OK',
+    results: {
+      sunrise:                     Hs  ? iso(noonUT - Hs)  : null,
+      sunset:                      Hs  ? iso(noonUT + Hs)  : null,
+      solar_noon:                  iso(noonUT),
+      civil_twilight_begin:        Hc  ? iso(noonUT - Hc)  : null,
+      civil_twilight_end:          Hc  ? iso(noonUT + Hc)  : null,
+      nautical_twilight_begin:     Hn  ? iso(noonUT - Hn)  : null,
+      nautical_twilight_end:       Hn  ? iso(noonUT + Hn)  : null,
+      astronomical_twilight_begin: Ha  ? iso(noonUT - Ha)  : null,
+      astronomical_twilight_end:   Ha  ? iso(noonUT + Ha)  : null,
+    }
+  };
+}
+
 function keplerE(M_rad,e){
   let E=M_rad;
   for(let i=0;i<50;i++){const d=(M_rad-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=d;if(Math.abs(d)<1e-9)break;}
@@ -1595,6 +1818,79 @@ function renderStellarEvents(){
 // ═══════════════════════════════════════════════════
 // UPDATED renderPlanetary — adds positions table
 // ═══════════════════════════════════════════════════
+
+
+// ─── Wind compass canvas renderer ────────────────────────────────────────────
+function drawWindCompass(canvasId, dirDeg, speedKt) {
+  const cv=$(canvasId); if(!cv||!cv.getContext) return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height, cx=W/2, cy=H/2, r=Math.min(W,H)/2-2;
+  ctx.clearRect(0,0,W,H);
+  // Background
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.fillStyle='#161C24'; ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1; ctx.stroke();
+  // Ring
+  ctx.beginPath(); ctx.arc(cx,cy,r*0.55,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.lineWidth=1; ctx.stroke();
+  // Cardinal ticks + labels
+  const cardinals=['N','E','S','W'];
+  for(let i=0;i<8;i++){
+    const a=(i*45-90)*Math.PI/180;
+    const isCard=i%2===0;
+    ctx.beginPath();
+    ctx.moveTo(cx+(r-5)*Math.cos(a),cy+(r-5)*Math.sin(a));
+    ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    ctx.strokeStyle=isCard?'rgba(255,255,255,0.4)':'rgba(255,255,255,0.15)';
+    ctx.lineWidth=isCard?1.5:1; ctx.stroke();
+    if(isCard){
+      ctx.fillStyle=i===0?'#fff':'rgba(255,255,255,0.45)';
+      ctx.font=(i===0?'bold ':'')+'8px Space Mono,monospace';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      const lx=cx+(r-13)*Math.cos(a), ly=cy+(r-13)*Math.sin(a);
+      ctx.fillText(cardinals[i/2],lx,ly);
+    }
+  }
+  // Wind direction arrow (FROM direction = arrow points INTO that direction)
+  const toAngle=(dirDeg-90)*Math.PI/180;
+  const aLen=r*0.48;
+  const ax=cx+aLen*Math.cos(toAngle), ay=cy+aLen*Math.sin(toAngle);
+  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(ax,ay);
+  ctx.strokeStyle='#4FC3F7'; ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.stroke();
+  // Arrowhead
+  const hLen=8;
+  [toAngle+2.5, toAngle-2.5].forEach(a=>{
+    ctx.beginPath(); ctx.moveTo(ax,ay);
+    ctx.lineTo(ax+hLen*Math.cos(a),ay+hLen*Math.sin(a));
+    ctx.stroke();
+  });
+  // Tail dot
+  ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2);
+  ctx.fillStyle='#4FC3F7'; ctx.fill();
+  // Speed label
+  ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.font='7px Space Mono,monospace';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(speedKt.toFixed(0)+'kt',cx,cy+r*0.68);
+}
+
+// ─── Heat index (NWS Rothfusz formula, inputs in °F and %) ───────────────────
+function heatIndex(T_f, rh) {
+  if(T_f<80||rh<40) return null;
+  const T=T_f, R=rh;
+  return -42.379+2.04901523*T+10.14333127*R-0.22475541*T*R
+    -0.00683783*T*T-0.05481717*R*R+0.00122874*T*T*R
+    +0.00085282*T*R*R-0.00000199*T*T*R*R;
+}
+
+// ─── Dew spread → comfort level ───────────────────────────────────────────────
+function dewSpreadComfort(spread_C) {
+  if(spread_C<3)  return{label:'Oppressive',color:'var(--red)'};
+  if(spread_C<7)  return{label:'Very Humid',color:'var(--ember)'};
+  if(spread_C<12) return{label:'Humid',color:'var(--gold)'};
+  if(spread_C<17) return{label:'Comfortable',color:'var(--green)'};
+  if(spread_C<22) return{label:'Dry',color:'var(--sky)'};
+  return{label:'Very Dry',color:'var(--muted2)'};
+}
 
 // MAIN LOAD
 async function loadAll() {
