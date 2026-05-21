@@ -6,6 +6,8 @@
 <title>Environmental Bulletin</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -192,7 +194,33 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .footer { padding:16px 22px; border-top:1px solid var(--border); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:10px; }
 .footer-ref { font-family:var(--mono); font-size:10px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; }
 
-@media (max-width:1100px) {
+
+  /* MAP PANEL */
+  .map-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); background:var(--bg3); flex-wrap:wrap; }
+  .map-tab-btn { background:none; border:none; border-bottom:2px solid transparent; color:var(--muted2); font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:10px 18px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .map-tab-btn:hover { color:var(--text); }
+  .map-tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+  .map-pane { display:none; }
+  .map-pane.active { display:block; }
+  .overlay-bar { display:flex; gap:6px; padding:10px 14px; background:var(--bg3); border-bottom:1px solid var(--border); flex-wrap:wrap; align-items:center; }
+  .ov-btn { background:var(--bg2); border:1px solid var(--border2); color:var(--muted2); font-family:var(--mono); font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:5px 10px; border-radius:4px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+  .ov-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .ov-btn.active { background:var(--gold-dim); border-color:var(--gold); color:var(--gold); }
+  .ov-sep { width:1px; height:18px; background:var(--border); margin:0 4px; }
+  .map-frame { width:100%; height:520px; border:none; display:block; }
+  #radar-map { height:520px; background:var(--bg3); }
+  .leaflet-container { background:#0F1318 !important; }
+  .radar-controls { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); z-index:500; display:flex; gap:8px; align-items:center; background:rgba(9,11,15,0.85); backdrop-filter:blur(4px); padding:7px 12px; border-radius:6px; border:1px solid var(--border2); }
+  .radar-ctrl-btn { background:var(--bg3); border:1px solid var(--border2); color:var(--muted2); font-family:var(--mono); font-size:11px; padding:4px 10px; border-radius:4px; cursor:pointer; transition:all 0.15s; }
+  .radar-ctrl-btn:hover { color:var(--gold); border-color:var(--gold); }
+  .radar-time { font-family:var(--mono); font-size:11px; color:var(--muted2); min-width:100px; text-align:center; }
+  .model-compare { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; padding:14px; background:var(--bg3); border-top:1px solid var(--border); }
+  .model-card { background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:12px; }
+  .model-name { font-family:var(--mono); font-size:9px; letter-spacing:0.15em; color:var(--muted2); text-transform:uppercase; margin-bottom:8px; }
+  .model-val { font-family:var(--mono); font-size:20px; font-weight:700; color:#fff; }
+  .model-sub { font-size:11px; color:var(--muted2); margin-top:3px; }
+
+  @media (max-width:1100px) {
   .hero-row { grid-template-columns:1fr 1fr; }
   .thermal-row, .regional-row, .space-row { grid-template-columns:1fr; }
 }
@@ -426,6 +454,166 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 
 
   <div class="sec-label">Scale 02 — Regional Patterns</div>
+  <!-- WEATHER MAP COMPOSITE -->
+  <div class="card" style="padding:0;overflow:hidden;border-radius:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--muted2);text-transform:uppercase">Weather Map Composite</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)" id="map-updated">--</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="map-tabs">
+      <button class="map-tab-btn active" data-tab="radar">📡 Radar</button>
+      <button class="map-tab-btn" data-tab="synoptic">🗺 Synoptic</button>
+      <button class="map-tab-btn" data-tab="marine">⚓ Marine</button>
+      <button class="map-tab-btn" data-tab="satellite">🛰 Satellite</button>
+      <div style="flex:1"></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:0 14px">
+        <span id="model-compare-badge" style="display:none;font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:0.1em">WINDY API ✓</span>
+      </div>
+    </div>
+
+    <!-- RADAR TAB -->
+    <div class="map-pane active" id="pane-radar">
+      <div style="position:relative">
+        <div id="radar-map"></div>
+        <div class="radar-controls">
+          <button class="radar-ctrl-btn" id="radar-prev">◀</button>
+          <div class="radar-time" id="radar-time-lbl">Loading…</div>
+          <button class="radar-ctrl-btn" id="radar-next">▶</button>
+          <button class="radar-ctrl-btn" id="radar-play">▶▶ Play</button>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2)">RainViewer</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYNOPTIC TAB -->
+    <div class="map-pane" id="pane-synoptic">
+      <div class="overlay-bar" style="flex-direction:column;align-items:flex-start;gap:6px;padding:10px 14px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Overlay</span>
+          <button class="ov-btn active" data-windy-overlay="pressure">Isobars</button>
+          <button class="ov-btn" data-windy-overlay="wind">Wind</button>
+          <button class="ov-btn" data-windy-overlay="rain">Rain</button>
+          <button class="ov-btn" data-windy-overlay="temp">Temp</button>
+          <button class="ov-btn" data-windy-overlay="dewpoint">Dewpoint</button>
+          <button class="ov-btn" data-windy-overlay="clouds">Clouds</button>
+          <button class="ov-btn" data-windy-overlay="cape">CAPE</button>
+          <button class="ov-btn" data-windy-overlay="snowAccu">Snow</button>
+          <button class="ov-btn" data-windy-overlay="fog">Fog</button>
+          <button class="ov-btn" data-windy-overlay="visibility">Visibility</button>
+          <button class="ov-btn" data-windy-overlay="thunderstorms">⚡ Storms</button>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Level</span>
+          <button class="ov-btn active" data-windy-level="surface">Surface</button>
+          <button class="ov-btn" data-windy-level="850h">850 hPa</button>
+          <button class="ov-btn" data-windy-level="500h">500 hPa</button>
+          <button class="ov-btn" data-windy-level="300h">300 hPa</button>
+          <div class="ov-sep"></div>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;margin-right:4px">Model</span>
+          <button class="ov-btn active" data-windy-model="ecmwf">ECMWF</button>
+          <button class="ov-btn" data-windy-model="gfs">GFS</button>
+          <button class="ov-btn" data-windy-model="namConus">NAM</button>
+          <button class="ov-btn" data-windy-model="iconEu">ICON</button>
+          <button class="ov-btn" data-windy-model="meto">UK Met</button>
+          <button class="ov-btn" data-windy-model="arome">AROME</button>
+        </div>
+      </div>
+      <iframe id="windy-frame" class="map-frame" src="about:blank" loading="lazy" title="Windy synoptic map"></iframe>
+    </div>
+
+    <!-- MARINE TAB — Premium Ventusky layers unlock when logged in at ventusky.com in same browser -->
+    <div class="map-pane" id="pane-marine">
+      <div class="overlay-bar" style="flex-direction:column;align-items:flex-start;gap:6px;padding:10px 14px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Marine</span>
+          <button class="ov-btn active" data-vtk-layer="waves">Wave Ht</button>
+          <button class="ov-btn" data-vtk-layer="swell-height">Swell Ht</button>
+          <button class="ov-btn" data-vtk-layer="swell-period">Swell Period</button>
+          <button class="ov-btn" data-vtk-layer="sea-currents">Currents</button>
+          <button class="ov-btn" data-vtk-layer="sea-temperature">Sea Temp</button>
+          <button class="ov-btn" data-vtk-layer="gust">Gusts</button>
+          <button class="ov-btn" data-vtk-layer="wind-surface">Wind</button>
+          <button class="ov-btn" data-vtk-layer="pressure-msl">Pressure</button>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Storm</span>
+          <button class="ov-btn" data-vtk-layer="cape">CAPE</button>
+          <button class="ov-btn" data-vtk-layer="wind-shear-0-6km">Wind Shear</button>
+          <button class="ov-btn" data-vtk-layer="cin">CIN</button>
+          <button class="ov-btn" data-vtk-layer="lifted-index">Lifted Idx</button>
+          <button class="ov-btn" data-vtk-layer="storm-relative-helicity">Helicity</button>
+          <button class="ov-btn" data-vtk-layer="rain-3h">Rain</button>
+          <button class="ov-btn" data-vtk-layer="freezing-rain">Frz Rain</button>
+          <div class="ov-sep"></div>
+          <a href="https://www.ventusky.com" target="_blank" rel="noopener"
+             style="font-family:var(--mono);font-size:9px;color:var(--sky);text-decoration:none;padding:5px 9px;border:1px solid rgba(79,195,247,0.3);border-radius:4px">
+            Open Ventusky (Premium) →
+          </a>
+        </div>
+      </div>
+      <iframe id="ventusky-marine-frame" class="map-frame" src="about:blank" loading="lazy" title="Ventusky marine map"></iframe>
+      <div id="predictwind-slot" style="padding:14px;background:var(--bg3);border-top:1px solid var(--border)">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ember);margin-bottom:8px">PredictWind</div>
+        <div id="predictwind-frame-wrap">
+          <!-- If CONFIG.predictwindEmbedUrl is set, iframe loads here -->
+          <div style="padding:14px 0;display:flex;align-items:flex-start;gap:14px">
+            <div style="font-size:28px;flex-shrink:0">⚓</div>
+            <div>
+              <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:6px">PredictWind doesn't support iframe embedding</div>
+              <div style="font-size:12px;color:var(--muted2);line-height:1.7;margin-bottom:10px">Their forecast maps require authentication and aren't embeddable. Your paid account gives you access to their 1km PWE/PWG models, ECMWF, GFS, UKMO, SPIRE, and AIFS — open their app or site for full marine routing and departure planning.</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <a href="https://forecast.predictwind.com" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:11px;color:var(--sky);text-decoration:none;padding:5px 10px;border:1px solid rgba(79,195,247,0.3);border-radius:4px">forecast.predictwind.com →</a>
+                <a href="https://www.predictwind.com/apps/predictwind-app" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:11px;color:var(--muted2);text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:4px">PredictWind App →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SATELLITE TAB -->
+    <div class="map-pane" id="pane-satellite">
+      <div class="overlay-bar" style="flex-direction:column;align-items:flex-start;gap:6px;padding:10px 14px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Atmos</span>
+          <button class="ov-btn active" data-vtk-sat-layer="clouds-surface">Clouds</button>
+          <button class="ov-btn" data-vtk-sat-layer="temperature-2m">Temp 2m</button>
+          <button class="ov-btn" data-vtk-sat-layer="temperature-850h">Temp 850</button>
+          <button class="ov-btn" data-vtk-sat-layer="humidity-surface">Humidity</button>
+          <button class="ov-btn" data-vtk-sat-layer="dew-point">Dewpoint</button>
+          <button class="ov-btn" data-vtk-sat-layer="visibility">Visibility</button>
+          <button class="ov-btn" data-vtk-sat-layer="fog">Fog</button>
+          <button class="ov-btn" data-vtk-sat-layer="snowcover">Snow Cover</button>
+          <button class="ov-btn" data-vtk-sat-layer="snow-3h">Snowfall</button>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">★ Prem</span>
+          <button class="ov-btn" data-vtk-sat-layer="cape">CAPE</button>
+          <button class="ov-btn" data-vtk-sat-layer="wind-shear-0-6km">Wind Shear</button>
+          <button class="ov-btn" data-vtk-sat-layer="lifted-index">Lifted Idx</button>
+          <button class="ov-btn" data-vtk-sat-layer="cin">CIN</button>
+          <button class="ov-btn" data-vtk-sat-layer="storm-relative-helicity">Helicity</button>
+          <button class="ov-btn" data-vtk-sat-layer="ozone">Ozone</button>
+          <div class="ov-sep"></div>
+          <a href="https://www.ventusky.com" target="_blank" rel="noopener"
+             style="font-family:var(--mono);font-size:9px;color:var(--sky);text-decoration:none;padding:5px 9px;border:1px solid rgba(79,195,247,0.3);border-radius:4px">
+            Open Ventusky (Premium) →
+          </a>
+        </div>
+      </div>
+      <iframe id="ventusky-sat-frame" class="map-frame" src="about:blank" loading="lazy" title="Ventusky satellite"></iframe>
+    </div>
+
+    <!-- MODEL COMPARISON STRIP (shows when Windy API key configured) -->
+    <div id="model-compare" style="display:none">
+      <div style="padding:10px 14px 4px;font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);border-top:1px solid var(--border)">Model Comparison — Surface Wind & Pressure at <span id="mc-location">your location</span></div>
+      <div class="model-compare" id="model-compare-grid"></div>
+    </div>
+  </div>
+
+
   <div class="regional-row">
     <div class="card">
       <div class="card-lbl">Surface Conditions</div>
@@ -616,6 +804,23 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 </footer>
 
 <script>
+// ═══════════════════════════════════════════════════
+// API CONFIG — add your keys here
+// Keep repo private if concerned about key exposure
+// ═══════════════════════════════════════════════════
+const CONFIG = {
+  windyApiKey: 'wDub57U3RXGeboEraIN847D5OvOjqlrZ', // Windy Point Forecast API
+  predictwindEmbedUrl: '',   // shareable URL from your PredictWind account
+};
+
+// MAP STATE
+const MAP = {
+  leaflet:null, radarFrames:[], radarLayers:[], radarIdx:0,
+  radarPlaying:false, radarTimer:null,
+  windyOverlay:'pressure', windyLevel:'surface', windyModel:'ecmwf',
+  vtkLayer:'waves', vtkSatLayer:'clouds-surface',
+};
+
 // PERSISTENCE
 const DEFAULTS = { lat: 27.7676, lng: -82.6403 };
 function loadPrefs() { try { const s = localStorage.getItem('wx_prefs'); if(s) return JSON.parse(s); } catch(e){} return {}; }
@@ -1892,6 +2097,213 @@ function dewSpreadComfort(spread_C) {
   return{label:'Very Dry',color:'var(--muted2)'};
 }
 
+
+// ═══════════════════════════════════════════════════
+// MAP ENGINE — Leaflet radar, Windy, Ventusky, PredictWind
+// ═══════════════════════════════════════════════════
+
+function windyUrl(overlay, level, model, lat, lng) {
+  return `https://embed.windy.com/embed2.html?lat=${lat}&lon=${lng}&zoom=6`
+    +`&level=${encodeURIComponent(level)}&overlay=${overlay}&product=${model}`
+    +`&menu=&message=true&marker=true&calendar=now&pressure=true`
+    +`&type=map&location=coordinates&metricWind=kt&metricTemp=%C2%B0F&radarRange=-1`;
+}
+
+function ventskyUrl(layer, lat, lng, zoom=6) {
+  return `https://embed.ventusky.com/?p=${lat};${lng};${zoom}&l=${layer}&w=soft&pin=${lat};${lng};dot;You`;
+}
+
+function updateWindyFrame() {
+  const f=document.getElementById('windy-frame');
+  if(f) f.src=windyUrl(MAP.windyOverlay,MAP.windyLevel,MAP.windyModel,STATE.lat,STATE.lng);
+}
+function updateVentuskyMarine() {
+  const f=document.getElementById('ventusky-marine-frame');
+  if(f) f.src=ventskyUrl(MAP.vtkLayer,STATE.lat,STATE.lng);
+}
+function updateVentuskySat() {
+  const f=document.getElementById('ventusky-sat-frame');
+  if(f) f.src=ventskyUrl(MAP.vtkSatLayer,STATE.lat,STATE.lng,5);
+}
+function updatePredictWindSlot() {
+  const wrap=document.getElementById('predictwind-frame-wrap');
+  if(!wrap||!CONFIG.predictwindEmbedUrl) return;
+  wrap.innerHTML=`<iframe src="${CONFIG.predictwindEmbedUrl}" class="map-frame" style="height:280px" loading="lazy" title="PredictWind"></iframe>`;
+}
+
+function initWindyControls() {
+  document.querySelectorAll('[data-windy-overlay]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-windy-overlay]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); MAP.windyOverlay=btn.dataset.windyOverlay; updateWindyFrame();
+  }));
+  document.querySelectorAll('[data-windy-level]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-windy-level]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); MAP.windyLevel=btn.dataset.windyLevel; updateWindyFrame();
+  }));
+  document.querySelectorAll('[data-windy-model]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-windy-model]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); MAP.windyModel=btn.dataset.windyModel; updateWindyFrame();
+  }));
+  document.querySelectorAll('[data-vtk-layer]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-vtk-layer]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); MAP.vtkLayer=btn.dataset.vtkLayer; updateVentuskyMarine();
+  }));
+  document.querySelectorAll('[data-vtk-sat-layer]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-vtk-sat-layer]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); MAP.vtkSatLayer=btn.dataset.vtkSatLayer; updateVentuskySat();
+  }));
+}
+
+function initMapTabs() {
+  document.querySelectorAll('.map-tab-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.map-tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.map-pane').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    const pane=document.getElementById('pane-'+btn.dataset.tab);
+    if(pane) pane.classList.add('active');
+    if(btn.dataset.tab==='radar'){
+      if(!MAP.leaflet) initRadarMap(); else MAP.leaflet.invalidateSize();
+    }
+    if(btn.dataset.tab==='synoptic'){
+      const f=document.getElementById('windy-frame');
+      if(f&&f.src==='about:blank') updateWindyFrame();
+    }
+    if(btn.dataset.tab==='marine'){
+      const f=document.getElementById('ventusky-marine-frame');
+      if(f&&f.src==='about:blank') updateVentuskyMarine();
+    }
+    if(btn.dataset.tab==='satellite'){
+      const f=document.getElementById('ventusky-sat-frame');
+      if(f&&f.src==='about:blank') updateVentuskySat();
+    }
+  }));
+}
+
+function initRadarMap() {
+  if(MAP.leaflet||!window.L) return;
+  MAP.leaflet=L.map('radar-map',{zoomControl:true}).setView([STATE.lat,STATE.lng],7);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'© <a href="https://openstreetmap.org">OSM</a> © <a href="https://carto.com">CARTO</a>',
+    subdomains:'abcd', maxZoom:19
+  }).addTo(MAP.leaflet);
+  L.circleMarker([STATE.lat,STATE.lng],{
+    radius:8, color:'#FF6B35', fillColor:'#FF6B35', fillOpacity:0.9, weight:2
+  }).addTo(MAP.leaflet).bindPopup(`<b style="font-family:monospace;font-size:12px">${STATE.lat.toFixed(4)}, ${STATE.lng.toFixed(4)}</b>`);
+  loadRainViewer();
+}
+
+async function loadRainViewer() {
+  try {
+    const data=await fetchJSON('https://api.rainviewer.com/public/weather-maps.json');
+    const host=data.host;
+    MAP.radarFrames=[...(data.radar.past||[]),...(data.radar.nowcast||[])];
+    MAP.radarLayers=[];
+    MAP.radarIdx=Math.max(0,MAP.radarFrames.length-1);
+    // Cleanup old layers
+    MAP.radarLayers.forEach(l=>MAP.leaflet.removeLayer(l));
+    MAP.radarFrames.forEach((frame,i)=>{
+      const layer=L.tileLayer(host+frame.path+'/512/{z}/{x}/{y}/4/1_1.png',{
+        tileSize:512, opacity:i===MAP.radarIdx?0.65:0, zIndex:3
+      });
+      layer.addTo(MAP.leaflet);
+      MAP.radarLayers.push(layer);
+    });
+    updateRadarDisplay();
+    const u=document.getElementById('map-updated');
+    if(u) u.textContent='RainViewer · '+new Date().toLocaleTimeString();
+  } catch(e){ console.error('RainViewer:',e); }
+}
+
+function setRadarFrame(idx) {
+  if(!MAP.radarFrames.length) return;
+  MAP.radarIdx=(idx+MAP.radarFrames.length)%MAP.radarFrames.length;
+  MAP.radarLayers.forEach((l,i)=>l.setOpacity(i===MAP.radarIdx?0.65:0));
+  updateRadarDisplay();
+}
+function updateRadarDisplay() {
+  const frame=MAP.radarFrames[MAP.radarIdx]; if(!frame) return;
+  const lbl=document.getElementById('radar-time-lbl');
+  if(lbl){
+    const t=new Date(frame.time*1000);
+    const isForecast=MAP.radarIdx>=(MAP.radarFrames.length-2)&&MAP.radarFrames.length>3;
+    lbl.textContent=t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})+(isForecast?' (nowcast)':'');
+    lbl.style.color=isForecast?'var(--gold)':'var(--muted2)';
+  }
+}
+function stopRadarPlay(){
+  MAP.radarPlaying=false; if(MAP.radarTimer)clearInterval(MAP.radarTimer);
+  const p=document.getElementById('radar-play'); if(p)p.textContent='▶▶ Play';
+}
+function initRadarControls(){
+  const prev=document.getElementById('radar-prev');
+  const next=document.getElementById('radar-next');
+  const play=document.getElementById('radar-play');
+  if(prev)prev.addEventListener('click',()=>{stopRadarPlay();setRadarFrame(MAP.radarIdx-1);});
+  if(next)next.addEventListener('click',()=>{stopRadarPlay();setRadarFrame(MAP.radarIdx+1);});
+  if(play)play.addEventListener('click',()=>{
+    if(MAP.radarPlaying){stopRadarPlay();}
+    else{MAP.radarPlaying=true;play.textContent='⏸ Pause';MAP.radarTimer=setInterval(()=>setRadarFrame(MAP.radarIdx+1),700);}
+  });
+}
+
+async function fetchWindyModels() {
+  if(!CONFIG.windyApiKey) return;
+  const models=['ecmwf','gfs','namConus'];
+  const results=await Promise.allSettled(models.map(model=>
+    fetch('https://api.windy.com/api/point-forecast/v2',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({lat:STATE.lat,lon:STATE.lng,model,
+        parameters:['wind','windGust','pressure','temp'],levels:['surface'],key:CONFIG.windyApiKey})
+    }).then(r=>r.json()).then(d=>({model,data:d}))
+  ));
+  const badge=document.getElementById('model-compare-badge');
+  const strip=document.getElementById('model-compare');
+  const grid=document.getElementById('model-compare-grid');
+  if(badge)badge.style.display='inline';
+  if(strip)strip.style.display='block';
+  const modelLabels={ecmwf:'ECMWF',gfs:'NOAA GFS',namConus:'NAM CONUS'};
+  const modelColors={ecmwf:'var(--sky)',gfs:'var(--green)',namConus:'var(--gold)'};
+  const cards=results.map(r=>{
+    if(r.status!=='fulfilled'||!r.value.data)return'';
+    const{model,data}=r.value;
+    if(data.error)return`<div class="model-card"><div class="model-name">${model}</div><div class="model-sub" style="color:var(--red)">${data.error}</div></div>`;
+    const now=Date.now()/1000;
+    const ts=data['ts']||[];
+    let ci=0; ts.forEach((t,i)=>{if(t<=now)ci=i;});
+    const wu=(data['wind_u-surface']||[])[ci]||0;
+    const wv=(data['wind_v-surface']||[])[ci]||0;
+    const wsKt=(Math.sqrt(wu*wu+wv*wv)*1.94384).toFixed(1);
+    const wdDeg=((Math.atan2(-wu,-wv)*180/Math.PI)+360)%360;
+    const pHpa=((data['pressure-surface']||[])[ci]||101325)/100;
+    const pMmhg=(pHpa*0.750064).toFixed(0);
+    const tK=(data['temp-surface']||[])[ci]||273;
+    const tDisp=STATE.useFahrenheit?((tK-273.15)*9/5+32).toFixed(1)+'°F':(tK-273.15).toFixed(1)+'°C';
+    const gustKt=((data['windGust-surface']||[])[ci]||0)*1.94384;
+    return`<div class="model-card" style="border-left:2px solid ${modelColors[model]}">
+      <div class="model-name" style="color:${modelColors[model]}">${modelLabels[model]||model}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div><div style="font-size:9px;color:var(--muted2);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.1em">Wind</div>
+          <div class="model-val" style="font-size:16px">${windDir(wdDeg)} ${wsKt}kt</div>
+          <div class="model-sub">Gust ${gustKt.toFixed(1)}kt</div></div>
+        <div><div style="font-size:9px;color:var(--muted2);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.1em">Pressure</div>
+          <div class="model-val" style="font-size:16px">${pMmhg}mmHg</div>
+          <div class="model-sub">${pHpa.toFixed(1)} hPa · ${tDisp}</div></div>
+      </div></div>`;
+  });
+  if(grid)grid.innerHTML=cards.join('');
+  const loc=document.getElementById('mc-location');
+  if(loc)loc.textContent=`${STATE.lat.toFixed(2)}°N, ${Math.abs(STATE.lng).toFixed(2)}°W`;
+}
+
+function initMaps() {
+  initMapTabs();
+  initWindyControls();
+  initRadarControls();
+  updatePredictWindSlot();
+  initRadarMap(); // load radar immediately (first tab)
+  if(CONFIG.windyApiKey) fetchWindyModels();
+}
+
 // MAIN LOAD
 async function loadAll() {
   const dot=$('live-dot'), upd=$('last-updated');
@@ -1941,6 +2353,8 @@ async function loadAll() {
 
   STATE.lastFetch=new Date();
   if(dot) dot.className='live-dot';
+  // Re-center leaflet map if coords changed
+  if(MAP.leaflet){ MAP.leaflet.setView([STATE.lat,STATE.lng],7); }
   if(upd) upd.textContent='Updated '+STATE.lastFetch.toLocaleTimeString();
   set('footer-coords', `${STATE.lat.toFixed(4)}°N  ${STATE.lng.toFixed(4)}°E`);
   set('loc-name', `${STATE.lat.toFixed(4)}, ${STATE.lng.toFixed(4)}`);
@@ -1973,6 +2387,7 @@ $('btn-refresh').addEventListener('click', loadAll);
 if(STATE.useFahrenheit) $('btn-unit').classList.add('on');
 loadAll();
 startAutoRefresh();
+initMaps();
 </script>
 </body>
 </html>
