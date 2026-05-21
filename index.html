@@ -254,6 +254,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
     <div class="card">
       <div class="card-lbl">Atmosphere</div>
       <div class="metric-row"><span class="mk">Humidity</span><span class="mv s" id="met-hum">--</span></div>
+      <div class="metric-row"><span class="mk">Wet Bulb</span><span class="mv" id="met-wetbulb">--</span></div>
       <div class="metric-row"><span class="mk">Pressure</span><span class="mv" id="met-pres">--</span></div>
       <div class="metric-row"><span class="mk">Wind</span><span class="mv" id="met-wind">--</span></div>
       <div class="metric-row"><span class="mk">Gusts</span><span class="mv" id="met-gust">--</span></div>
@@ -362,28 +363,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
     <div class="fc-row" id="fc-row"><div class="fc-day"><div class="fc-dow">--</div></div></div>
   </div>
 
-  <!-- PLANETARY ALMANAC -->
-  <div class="card" id="planet-card">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase">Planetary Almanac</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)" id="planet-asof">--</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px">Currently Retrograde</div>
-        <div id="planet-retro-current"><div class="loading">Computing</div></div>
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--sky);margin-bottom:8px">Upcoming Retrogrades — Next 90 Days</div>
-        <div id="planet-retro-upcoming"><div class="loading">Computing</div></div>
-      </div>
-    </div>
-    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
-      <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted2);margin-bottom:10px">All Planets — Current Status</div>
-      <div id="planet-status-row" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-    </div>
-    <div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);font-style:italic">Dates computed from astronomical ephemeris · Astrological reference</div>
-  </div>
 
 
   <div class="sec-label">Scale 02 — Regional Patterns</div>
@@ -422,6 +401,20 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
       <div style="font-family:var(--mono);font-size:11px;color:var(--muted2)" id="afd-issued">--</div>
     </div>
     <div class="afd-text" id="afd-text"><span class="loading">Loading forecast discussion</span></div>
+    </div>
+    <div class="card">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--green);text-transform:uppercase;margin-bottom:12px">Folk / Empirical Forecast</div>
+      <div style="font-size:14px;line-height:1.85;color:var(--text);font-style:italic" id="farmers-text"><span class="loading">Reading the signs</span></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="kpi-box"><div class="kpi-l">Pressure Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-pres-sig">--</div></div>
+          <div class="kpi-box"><div class="kpi-l">Wind Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-wind-sig">--</div></div>
+          <div class="kpi-box"><div class="kpi-l">Humidity Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-hum-sig">--</div></div>
+          <div class="kpi-box"><div class="kpi-l">Moon Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-moon-sig">--</div></div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);font-style:italic">Pressure · wind direction · dew spread · lunar phase heuristics</div>
+    </div>
   </div>
 
   <div class="sec-label">Scale 04 — Space Weather</div>
@@ -495,6 +488,62 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
         <div id="swpc-panel"><div class="loading">Loading</div></div>
       </div>
     </div>
+
+
+
+  <!-- PLANETARY ALMANAC (moved from Scale 01) -->
+  <div class="card" id="planet-card">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase">Planetary Almanac</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)" id="planet-asof">--</div>
+    </div>
+    <!-- Planet positions table -->
+    <div style="overflow-x:auto;margin-bottom:16px">
+      <table style="width:100%;border-collapse:separate;border-spacing:0 4px;min-width:600px">
+        <thead>
+          <tr style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2)">
+            <th style="text-align:left;padding:4px 8px">Planet</th>
+            <th style="text-align:left;padding:4px 8px">Constellation</th>
+            <th style="text-align:right;padding:4px 8px">Altitude</th>
+            <th style="text-align:right;padding:4px 8px">Azimuth</th>
+            <th style="text-align:center;padding:4px 8px">Direction</th>
+            <th style="text-align:right;padding:4px 8px">Dist (AU)</th>
+            <th style="text-align:right;padding:4px 8px">Elongation</th>
+            <th style="text-align:left;padding:4px 8px">Visibility</th>
+          </tr>
+        </thead>
+        <tbody id="planet-pos-tbody"></tbody>
+      </table>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin-bottom:8px">Currently Retrograde</div>
+        <div id="planet-retro-current"><div class="loading">Computing</div></div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--sky);margin-bottom:8px">Upcoming Retrogrades — 90 Days</div>
+        <div id="planet-retro-upcoming"><div class="loading">Computing</div></div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted2);margin-bottom:10px">All Planets — Status</div>
+      <div id="planet-status-row" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);font-style:italic">Positions computed from orbital mechanics · ±2° accuracy · Retrogrades from astronomical ephemeris</div>
+  </div>
+
+  <!-- CONSTELLATIONS + STELLAR EVENTS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--purple);text-transform:uppercase;margin-bottom:14px">Constellations Visible Tonight</div>
+      <div id="constellation-panel"><div class="loading">Computing</div></div>
+      <div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);font-style:italic">Constellations above 20° altitude at your location right now</div>
+    </div>
+    <div class="card">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--ember);text-transform:uppercase;margin-bottom:14px">Stellar Events Calendar</div>
+      <div id="stellar-events-panel"><div class="loading">Loading</div></div>
+    </div>
+  </div>
 
   </div>
 </main>
@@ -680,10 +729,13 @@ function renderWeather(data) {
   set('bar-now-label', dispT(cur));
 
   set('met-hum', c.relative_humidity_2m+'%');
+  const wb=wetBulb(c.temperature_2m, c.relative_humidity_2m);
+  set('met-wetbulb', STATE.useFahrenheit?(wb*9/5+32).toFixed(1)+'°F':wb.toFixed(1)+'°C');
   const mmhg=(c.surface_pressure*0.750064).toFixed(1);
   set('met-pres', c.surface_pressure.toFixed(1)+' hPa · '+mmhg+' mmHg');
-  set('met-wind', windDir(c.wind_direction_10m)+' '+c.wind_speed_10m.toFixed(1)+' km/h');
-  set('met-gust', c.wind_gusts_10m.toFixed(1)+' km/h');
+  const ws_kt=(c.wind_speed_10m*0.539957).toFixed(1);
+  set('met-wind', windDir(c.wind_direction_10m)+' '+ws_kt+' kt ('+beaufort(c.wind_speed_10m)+')');
+  set('met-gust', (c.wind_gusts_10m*0.539957).toFixed(1)+' kt');
   set('met-vis', (c.visibility/1000).toFixed(1)+' km');
   const uvEl = $('met-uv');
   if(uvEl) { uvEl.textContent = c.uv_index.toFixed(1); uvEl.className='mv '+(c.uv_index>=8?'e':c.uv_index>=6?'w':'g'); }
@@ -695,7 +747,7 @@ function renderWeather(data) {
   if(pb) pb.innerHTML = (c.surface_pressure*0.750064).toFixed(1)+'<span class="pres-unit"> mmHg</span>';
   const pbsub=$('pres-sub'); if(pbsub) pbsub.textContent=c.surface_pressure.toFixed(1)+' hPa';
   set('reg-pop', (d.precipitation_probability_max[0]||0)+'%');
-  set('reg-wmax', d.wind_speed_10m_max[0].toFixed(1)+' km/h');
+  set('reg-wmax', (d.wind_speed_10m_max[0]*0.539957).toFixed(1)+' kt');
   set('reg-uvmax', (d.uv_index_max[0]||0).toFixed(1));
   set('reg-precip', (d.precipitation_sum[0]||0).toFixed(1)+' mm');
 
@@ -731,6 +783,17 @@ function renderWeather(data) {
       }
     });
   }
+
+  // Farmer's forecast (needs moon data — call after renderMoon sets moon state)
+  try{
+    const moonNow=moonPhase(new Date());
+    const ff=farmersForecast(c,d,moonNow);
+    const ft=$('farmers-text'); if(ft) ft.textContent=ff.prose;
+    if(ff.signals.pres){const e=$('folk-pres-sig');if(e){e.textContent=ff.signals.pres.t;e.style.color=ff.signals.pres.c;}}
+    if(ff.signals.wind){const e=$('folk-wind-sig');if(e){e.textContent=ff.signals.wind.t;e.style.color=ff.signals.wind.c;}}
+    if(ff.signals.hum){const e=$('folk-hum-sig');if(e){e.textContent=ff.signals.hum.t;e.style.color=ff.signals.hum.c;}}
+    if(ff.signals.moon){const e=$('folk-moon-sig');if(e){e.textContent=ff.signals.moon.t;e.style.color=ff.signals.moon.c;}}
+  }catch(ex){console.error('farmers',ex);}
 
   // 7-day
   const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1130,31 +1193,53 @@ function renderPlanetary() {
   const nowMs = now.getTime();
   const in90 = nowMs + 90*86400000;
 
-  set('planet-asof', now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}));
+  set('planet-asof', now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}));
 
-  // Currently retrograde
+  // ── Planet Positions Table ──
+  try {
+    const positions = computePlanetPositions(STATE.lat, STATE.lng, now);
+    const tbody = $('planet-pos-tbody');
+    if(tbody) {
+      tbody.innerHTML = positions.map(p => {
+        const vis = planetVisibility(p.alt, p.elongation, p.name);
+        const altColor = p.alt < 0 ? 'var(--muted2)' : p.alt < 15 ? 'var(--gold)' : 'var(--green)';
+        return `<tr style="font-size:12px">
+          <td style="padding:5px 8px;background:var(--bg3);border-radius:4px 0 0 4px">
+            <span style="font-size:18px;color:${p.color}">${p.glyph}</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text);margin-left:6px">${p.name}</span>
+          </td>
+          <td style="padding:5px 8px;background:var(--bg3);font-size:12px;color:var(--muted2)">${p.constellation}</td>
+          <td style="padding:5px 8px;background:var(--bg3);font-family:var(--mono);font-size:12px;color:${altColor};text-align:right">${p.alt > 0 ? '+' : ''}${p.alt}°</td>
+          <td style="padding:5px 8px;background:var(--bg3);font-family:var(--mono);font-size:12px;text-align:right;color:var(--muted2)">${p.az}°</td>
+          <td style="padding:5px 8px;background:var(--bg3);font-family:var(--mono);font-size:12px;text-align:center;color:var(--text)">${azCompass(p.az)}</td>
+          <td style="padding:5px 8px;background:var(--bg3);font-family:var(--mono);font-size:12px;text-align:right;color:var(--muted2)">${p.dist}</td>
+          <td style="padding:5px 8px;background:var(--bg3);font-family:var(--mono);font-size:12px;text-align:right;color:var(--muted2)">${p.elongation}°</td>
+          <td style="padding:5px 8px;background:var(--bg3);border-radius:0 4px 4px 0;color:${vis.c};font-size:12px">${vis.t}</td>
+        </tr>`;
+      }).join('');
+    }
+  } catch(e) { console.error('Planet positions:', e); }
+
+  // ── Retrogrades ──
   const current = RETROGRADES.filter(r => {
-    const s=new Date(r.start).getTime(), e=new Date(r.end).getTime();
-    return nowMs >= s && nowMs <= e;
+    const s=new Date(r.start).getTime(), e2=new Date(r.end).getTime();
+    return nowMs >= s && nowMs <= e2;
   });
-
   const curEl = $('planet-retro-current');
   if(curEl) {
     if(!current.length) {
       curEl.innerHTML = '<div style="font-size:13px;color:var(--green);padding:4px 0">✓ No planets currently retrograde</div>';
     } else {
       curEl.innerHTML = current.map(r => {
-        const endDate = new Date(r.end);
-        const daysLeft = Math.ceil((endDate - now) / 86400000);
-        const endFmt = endDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        const daysLeft = Math.ceil((new Date(r.end)-now)/86400000);
+        const endFmt = new Date(r.end).toLocaleDateString('en-US',{month:'short',day:'numeric'});
         return `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:rgba(252,129,129,0.07);border:1px solid rgba(252,129,129,0.2);border-radius:6px;margin-bottom:6px">
-          <div style="font-size:20px;line-height:1;color:${r.color}">${r.glyph}</div>
+          <span style="font-size:20px;color:${r.color}">${r.glyph}</span>
           <div style="flex:1">
-            <div style="font-size:13px;font-weight:500;color:#fff">${r.planet}</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">${r.sign}</div>
+            <div style="font-size:13px;font-weight:500;color:#fff">${r.planet} <span style="font-size:11px;color:var(--muted2)">in ${r.sign}</span></div>
           </div>
           <div style="text-align:right">
-            <div style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--red)">${daysLeft}d left</div>
+            <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--red)">${daysLeft}d left</div>
             <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">Direct ${endFmt}</div>
           </div>
         </div>`;
@@ -1162,67 +1247,352 @@ function renderPlanetary() {
     }
   }
 
-  // Upcoming in next 90 days (not currently active)
   const upcoming = RETROGRADES.filter(r => {
     const s=new Date(r.start).getTime();
     return s > nowMs && s <= in90;
   }).sort((a,b)=>new Date(a.start)-new Date(b.start));
-
   const upEl = $('planet-retro-upcoming');
   if(upEl) {
     if(!upcoming.length) {
       upEl.innerHTML = '<div style="font-size:13px;color:var(--muted2);padding:4px 0">No new retrogrades in next 90 days</div>';
     } else {
       upEl.innerHTML = upcoming.map(r => {
-        const startDate = new Date(r.start);
-        const endDate = new Date(r.end);
-        const daysUntil = Math.ceil((startDate - now) / 86400000);
-        const duration = Math.ceil((endDate - startDate) / 86400000);
-        const startFmt = startDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-        const endFmt = endDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        const d=Math.ceil((new Date(r.start)-now)/86400000);
+        const dur=Math.ceil((new Date(r.end)-new Date(r.start))/86400000);
+        const sf=new Date(r.start).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        const ef=new Date(r.end).toLocaleDateString('en-US',{month:'short',day:'numeric'});
         return `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:rgba(79,195,247,0.05);border:1px solid rgba(79,195,247,0.12);border-radius:6px;margin-bottom:6px">
-          <div style="font-size:20px;line-height:1;color:${r.color}">${r.glyph}</div>
+          <span style="font-size:20px;color:${r.color}">${r.glyph}</span>
           <div style="flex:1">
-            <div style="font-size:13px;font-weight:500;color:#fff">${r.planet} <span style="font-size:11px;color:var(--muted2);font-weight:400">in ${r.sign}</span></div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">${startFmt} – ${endFmt} · ${duration} days</div>
+            <div style="font-size:13px;font-weight:500;color:#fff">${r.planet} <span style="font-size:11px;color:var(--muted2)">in ${r.sign}</span></div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">${sf} – ${ef} · ${dur} days</div>
           </div>
-          <div style="text-align:right">
-            <div style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--sky)">in ${daysUntil}d</div>
-          </div>
+          <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--sky)">in ${d}d</div>
         </div>`;
       }).join('');
     }
   }
 
-  // Status pill row
+  // ── Status pills ──
   const statusEl = $('planet-status-row');
   if(statusEl) {
     statusEl.innerHTML = ALL_PLANETS.map(p => {
-      const retro = RETROGRADES.find(r => {
-        const s=new Date(r.start).getTime(), e=new Date(r.end).getTime();
-        return r.planet===p.planet && nowMs>=s && nowMs<=e;
-      });
-      const upcoming2 = RETROGRADES.find(r => {
-        const s=new Date(r.start).getTime();
-        return r.planet===p.planet && s>nowMs && s<=nowMs+30*86400000;
-      });
-      let bg, border, label, labelColor;
-      if(retro) {
-        bg='rgba(252,129,129,0.1)'; border='rgba(252,129,129,0.3)'; label='℞'; labelColor='var(--red)';
-      } else if(upcoming2) {
-        const d=Math.ceil((new Date(upcoming2.start)-now)/86400000);
-        bg='rgba(200,151,74,0.08)'; border='rgba(200,151,74,0.25)'; label='℞ '+d+'d'; labelColor='var(--gold)';
-      } else {
-        bg='rgba(72,187,120,0.06)'; border='rgba(72,187,120,0.15)'; label='D'; labelColor='var(--green)';
-      }
-      return `<div style="display:flex;flex-direction:column;align-items:center;padding:8px 12px;background:${bg};border:1px solid ${border};border-radius:6px;gap:4px;min-width:52px">
+      const retro = RETROGRADES.find(r => r.planet===p.planet && nowMs>=new Date(r.start).getTime() && nowMs<=new Date(r.end).getTime());
+      const soon  = RETROGRADES.find(r => r.planet===p.planet && new Date(r.start).getTime()>nowMs && new Date(r.start).getTime()<=nowMs+30*86400000);
+      let bg,brd,lbl,lc;
+      if(retro){bg='rgba(252,129,129,0.1)';brd='rgba(252,129,129,0.3)';lbl='℞';lc='var(--red)';}
+      else if(soon){const d2=Math.ceil((new Date(soon.start)-now)/86400000);bg='rgba(200,151,74,0.08)';brd='rgba(200,151,74,0.25)';lbl='℞ '+d2+'d';lc='var(--gold)';}
+      else{bg='rgba(72,187,120,0.06)';brd='rgba(72,187,120,0.15)';lbl='D';lc='var(--green)';}
+      return `<div style="display:flex;flex-direction:column;align-items:center;padding:8px 12px;background:${bg};border:1px solid ${brd};border-radius:6px;gap:4px;min-width:52px">
         <div style="font-size:18px;color:${p.color}">${p.glyph}</div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">${p.planet.slice(0,3).toUpperCase()}</div>
-        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:${labelColor}">${label}</div>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:${lc}">${lbl}</div>
       </div>`;
     }).join('');
   }
 }
+
+
+
+// ═══════════════════════════════════════════════════
+// WET BULB + WIND UTILS
+// ═══════════════════════════════════════════════════
+function wetBulb(T, RH) {
+  // Stull (2011), accurate ±0.65°C for RH 5–99%, T −20–50°C
+  return T*Math.atan(0.151977*Math.sqrt(RH+8.313659))
+    + Math.atan(T+RH) - Math.atan(RH-1.676331)
+    + 0.00391838*Math.pow(RH,1.5)*Math.atan(0.023101*RH)
+    - 4.686035;
+}
+function beaufort(kmh) {
+  const kt = kmh * 0.539957;
+  if(kt<1) return 'Calm';
+  if(kt<4) return 'Light air';
+  if(kt<7) return 'Light breeze';
+  if(kt<11) return 'Gentle breeze';
+  if(kt<17) return 'Mod. breeze';
+  if(kt<22) return 'Fresh breeze';
+  if(kt<28) return 'Strong breeze';
+  if(kt<34) return 'Near gale';
+  if(kt<41) return 'Gale';
+  if(kt<48) return 'Strong gale';
+  return 'Storm';
+}
+
+// ═══════════════════════════════════════════════════
+// FARMER'S / FOLK FORECAST
+// ═══════════════════════════════════════════════════
+function farmersForecast(cur, daily, moon) {
+  const T=cur.temperature_2m, RH=cur.relative_humidity_2m;
+  const P=cur.surface_pressure, wDir=cur.wind_direction_10m;
+  const dew=cur.dew_point_2m, spread=T-dew;
+  const lines=[], signals={};
+
+  // Pressure
+  if(P>1022){lines.push('The barometer stands high — fair skies likely to hold.');signals.pres={t:'Fair ↑',c:'var(--green)'};}
+  else if(P>1013){lines.push('Steady pressure holds — conditions look settled.');signals.pres={t:'Steady →',c:'var(--sky)'};}
+  else if(P>1000){lines.push('Falling glass warns of weather approaching from the west.');signals.pres={t:'Falling ↓',c:'var(--gold)'};}
+  else{lines.push('Deep low pressure — expect unsettled or stormy conditions.');signals.pres={t:'Low ⚠',c:'var(--red)'};}
+
+  // Wind direction (N. hemisphere folk wisdom)
+  if(wDir>=315||wDir<45){lines.push('North winds clear the air and push out moisture.');signals.wind={t:'N — Clearing',c:'var(--green)'};}
+  else if(wDir>=45&&wDir<135){lines.push('East winds bring weather change before the day is done.');signals.wind={t:'E — Changing',c:'var(--gold)'};}
+  else if(wDir>=135&&wDir<225){lines.push('South wind carries warmth and sea moisture inland.');signals.wind={t:'S — Moist',c:'var(--muted2)'};}
+  else{lines.push('West winds moderate the temperature and clear the sky.');signals.wind={t:'W — Fair',c:'var(--green)'};}
+
+  // Dew spread / humidity
+  if(spread<2){lines.push('Dew point nearly equals air temperature — morning fog before dawn.');signals.hum={t:'Fog Risk',c:'var(--gold)'};}
+  else if(RH>82){lines.push('Air near saturation — afternoon storm development possible.');signals.hum={t:'High RH ⚠',c:'var(--ember)'};}
+  else if(RH<40){lines.push('Dry air favours clear skies and excellent visibility.');signals.hum={t:'Dry — Clear',c:'var(--green)'};}
+  else{signals.hum={t:'Moderate',c:'var(--sky)'};}
+
+  // Moon
+  if(moon.name==='New Moon'){lines.push('New moon darkens the sky — finest night for deep-sky observing.');signals.moon={t:'New — Dark',c:'var(--sky)'};}
+  else if(moon.name==='Full Moon'){lines.push('Full moon: tides run strong and the night stays bright.');signals.moon={t:'Full — Bright',c:'var(--gold)'};}
+  else{signals.moon={t:moon.name.split(' ').slice(-1)[0],c:'var(--muted2)'};}
+
+  // Season heat/humidity warning (lat-dependent, approximate)
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  if(doy>150&&doy<265&&RH>70&&T>30) lines.push('Heat and moisture elevated — watch for afternoon thunderstorm development.');
+
+  const prose = lines.slice(0,3).join(' ');
+  return { prose: prose||'No strong weather signals detected. Conditions appear stable.', signals };
+}
+
+// ═══════════════════════════════════════════════════
+// ASTRONOMY ENGINE — Jean Meeus "Astronomical Algorithms" 2nd ed.
+// Accuracy: ±2° for planets, ±0.5° for sun
+// ═══════════════════════════════════════════════════
+const R2D=180/Math.PI, D2R=Math.PI/180;
+function normDeg(x){return((x%360)+360)%360;}
+
+function julianDay(date){
+  const Y=date.getUTCFullYear(), M=date.getUTCMonth()+1;
+  const D=date.getUTCDate()+date.getUTCHours()/24+date.getUTCMinutes()/1440;
+  let Yp=M<=2?Y-1:Y, Mp=M<=2?M+12:M;
+  const A=Math.floor(Yp/100), B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(Yp+4716))+Math.floor(30.6001*(Mp+1))+D+B-1524.5;
+}
+
+function keplerE(M_rad,e){
+  let E=M_rad;
+  for(let i=0;i<50;i++){const d=(M_rad-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=d;if(Math.abs(d)<1e-9)break;}
+  return E;
+}
+
+function localSiderealTime(JD, lng){
+  // GMST formula (Meeus eq 12.4 simplified)
+  const T=(JD-2451545.0)/36525;
+  const GST=normDeg(280.46061837+360.98564736629*(JD-2451545)+0.000387933*T*T-T*T*T/38710000);
+  return normDeg(GST+lng);
+}
+
+// Orbital elements at J2000.0 [L0,L1,a,e,i_deg,W_deg,w_deg]
+// L=mean longitude, a=semi-major axis AU, e=eccentricity
+// i=inclination, W=long.ascending node, w=long.perihelion
+const ORB={
+  Mercury:[252.250906,149472.6746358,0.38709831,0.20563175, 7.004986, 48.330893, 77.456119],
+  Venus:  [181.979801, 58517.8156760,0.72332982,0.00677188, 3.394662, 76.679920,131.563703],
+  Earth:  [100.466449, 35999.3728519,1.00000102,0.01670862, 0.000000,  0.000000,102.937348],
+  Mars:   [355.433275, 19140.2993313,1.52367934,0.09340062, 1.849726, 49.558093,336.060234],
+  Jupiter:[ 34.351519,  3034.9056606,5.20260319,0.04849485, 1.303270,100.464441, 14.331309],
+  Saturn: [ 50.077444,  1222.1138488,9.55490960,0.05550825, 2.488878,113.665524, 93.056787],
+  Uranus: [314.055005,   428.4669983,19.2184461,0.04629590, 0.773196, 74.005947,173.005159],
+  Neptune:[304.348665,   218.4862002,30.1103869,0.00898809, 1.769952,131.784057, 48.123691],
+};
+
+function heliocentric(name,T){
+  const [L0,L1,a,e,i,W,w]=ORB[name];
+  const L=normDeg(L0+L1*T);
+  const M_deg=normDeg(L-w);
+  const E=keplerE(M_deg*D2R,e);
+  const v=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));
+  const r=a*(1-e*Math.cos(E));
+  const omega=normDeg(w-W)*D2R;
+  const u=v+omega;
+  const iR=i*D2R,WR=W*D2R;
+  return {
+    X:r*(Math.cos(WR)*Math.cos(u)-Math.sin(WR)*Math.sin(u)*Math.cos(iR)),
+    Y:r*(Math.sin(WR)*Math.cos(u)+Math.cos(WR)*Math.sin(u)*Math.cos(iR)),
+    Z:r*Math.sin(u)*Math.sin(iR), r
+  };
+}
+
+const PLANET_GLYPH={Mercury:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄',Uranus:'♅',Neptune:'♆'};
+const PLANET_COLOR={Mercury:'#C8974A',Venus:'#FF6B35',Mars:'#FC8181',Jupiter:'#9F7AEA',Saturn:'#8A9BB0',Uranus:'#4FC3F7',Neptune:'#5C6BC0'};
+
+function eclLonToConst(lon){
+  const L=normDeg(lon);
+  if(L<28)return'Aries'; if(L<88)return'Taurus'; if(L<118)return'Gemini';
+  if(L<138)return'Cancer'; if(L<174)return'Leo'; if(L<218)return'Virgo';
+  if(L<241)return'Libra'; if(L<247)return'Scorpius'; if(L<266)return'Ophiuchus';
+  if(L<299)return'Sagittarius'; if(L<328)return'Capricornus'; if(L<350)return'Aquarius';
+  return'Pisces';
+}
+
+function azCompass(az){
+  return['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'][Math.round(az/22.5)%16];
+}
+
+function planetVisibility(alt, elon, name){
+  if(alt<0) return{t:'Below horizon',c:'var(--muted2)'};
+  const minElon = name==='Mercury'?18:12;
+  if(elon<minElon) return{t:'In sun\'s glare',c:'var(--ember)'};
+  if(alt<8) return{t:'Near horizon',c:'var(--gold)'};
+  if(alt<25) return{t:'Fair',c:'var(--gold)'};
+  if(alt<50) return{t:'Good',c:'var(--green)'};
+  return{t:'Excellent',c:'var(--green)'};
+}
+
+function computePlanetPositions(lat,lng,date){
+  const JD=julianDay(date);
+  const T=(JD-2451545.0)/36525;
+  const eps=(23.439291-0.013004*T)*D2R;
+  const LST=localSiderealTime(JD,lng);
+  const earth=heliocentric('Earth',T);
+  const sunLon=normDeg(Math.atan2(-earth.Y,-earth.X)*R2D);
+  return['Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune'].map(name=>{
+    const p=heliocentric(name,T);
+    const dx=p.X-earth.X, dy=p.Y-earth.Y, dz=p.Z-earth.Z;
+    const dist=Math.sqrt(dx*dx+dy*dy+dz*dz);
+    const ecLon=normDeg(Math.atan2(dy,dx)*R2D);
+    const ecLat=Math.asin(dz/dist)*R2D;
+    const ecLonR=ecLon*D2R, ecLatR=ecLat*D2R;
+    const RA=normDeg(Math.atan2(Math.sin(ecLonR)*Math.cos(eps)-Math.tan(ecLatR)*Math.sin(eps),Math.cos(ecLonR))*R2D);
+    const Dec=Math.asin(Math.sin(ecLatR)*Math.cos(eps)+Math.cos(ecLatR)*Math.sin(eps)*Math.sin(ecLonR))*R2D;
+    const H=normDeg(LST-RA);
+    const HR=H*D2R, latR=lat*D2R, DecR=Dec*D2R;
+    const alt=Math.asin(Math.sin(latR)*Math.sin(DecR)+Math.cos(latR)*Math.cos(DecR)*Math.cos(HR))*R2D;
+    const az=normDeg(Math.atan2(-Math.cos(DecR)*Math.sin(HR),Math.sin(DecR)*Math.cos(latR)-Math.cos(DecR)*Math.cos(HR)*Math.sin(latR))*R2D);
+    const elon=Math.acos(Math.max(-1,Math.min(1,Math.cos(ecLatR)*Math.cos((ecLon-sunLon)*D2R))))*R2D;
+    return{name,glyph:PLANET_GLYPH[name],color:PLANET_COLOR[name],
+      alt:+alt.toFixed(1),az:+az.toFixed(1),RA:+RA.toFixed(1),Dec:+Dec.toFixed(1),
+      dist:+dist.toFixed(3),ecLon:+ecLon.toFixed(1),
+      constellation:eclLonToConst(ecLon),elongation:+elon.toFixed(1)};
+  });
+}
+
+// Visible constellations
+const CONSTELLATIONS=[
+  {name:'Orion',ra:83,dec:5,note:'Hunter — Betelgeuse, Rigel, M42 Nebula',season:'Winter'},
+  {name:'Taurus',ra:67,dec:16,note:'Bull — Aldebaran, Pleiades, Hyades',season:'Winter'},
+  {name:'Gemini',ra:112,dec:22,note:'Twins — Castor & Pollux',season:'Winter'},
+  {name:'Auriga',ra:90,dec:42,note:'Charioteer — brilliant Capella',season:'Winter'},
+  {name:'Ursa Major',ra:165,dec:56,note:'Great Bear — Big Dipper asterism',season:'Year-round'},
+  {name:'Leo',ra:170,dec:15,note:'Lion — bright Regulus, Denebola',season:'Spring'},
+  {name:'Virgo',ra:200,dec:-4,note:'Maiden — Spica (α Vir, mag 0.97)',season:'Spring'},
+  {name:'Boötes',ra:219,dec:31,note:'Herdsman — brilliant Arcturus',season:'Spring/Summer'},
+  {name:'Corona Borealis',ra:235,dec:30,note:'Northern Crown — compact gem',season:'Summer'},
+  {name:'Hercules',ra:258,dec:28,note:'Hero — M13 Great Globular Cluster',season:'Summer'},
+  {name:'Scorpius',ra:253,dec:-28,note:'Scorpion — red Antares, Milky Way',season:'Summer'},
+  {name:'Sagittarius',ra:287,dec:-25,note:'Archer — galactic centre direction',season:'Summer'},
+  {name:'Lyra',ra:284,dec:38,note:'Lyre — brilliant Vega (Summer Triangle)',season:'Summer'},
+  {name:'Aquila',ra:298,dec:2,note:'Eagle — Altair (Summer Triangle)',season:'Summer'},
+  {name:'Cygnus',ra:314,dec:42,note:'Swan — Deneb, Northern Cross',season:'Summer'},
+  {name:'Cassiopeia',ra:14,dec:62,note:'Queen — W-shape in Milky Way',season:'Fall/Winter'},
+  {name:'Perseus',ra:49,dec:45,note:'Hero — Double Cluster, Perseid source',season:'Fall/Winter'},
+  {name:'Aquarius',ra:339,dec:-12,note:'Water Bearer — Aquariid meteor source',season:'Fall'},
+  {name:'Pegasus',ra:342,dec:20,note:'Winged Horse — Great Square asterism',season:'Fall'},
+  {name:'Andromeda',ra:14,dec:38,note:'Princess — M31 Andromeda Galaxy',season:'Fall'},
+];
+
+function getVisibleConstellations(lat, lng, date){
+  const JD=julianDay(date);
+  const LST=localSiderealTime(JD,lng);
+  const latR=lat*D2R;
+  return CONSTELLATIONS.map(con=>{
+    const H=normDeg(LST-con.ra);
+    const HR=H*D2R, DecR=con.dec*D2R;
+    const alt=Math.asin(Math.sin(latR)*Math.sin(DecR)+Math.cos(latR)*Math.cos(DecR)*Math.cos(HR))*R2D;
+    return{...con,alt:+alt.toFixed(0)};
+  }).filter(c=>c.alt>15).sort((a,b)=>b.alt-a.alt);
+}
+
+function renderNightSky(){
+  const visible=getVisibleConstellations(STATE.lat,STATE.lng,new Date());
+  const panel=$('constellation-panel'); if(!panel) return;
+  if(!visible.length){
+    panel.innerHTML='<div class="err">No major constellations above 15° at current time and location</div>';
+    return;
+  }
+  panel.innerHTML=visible.slice(0,8).map(c=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;color:#fff">${c.name} <span style="font-family:var(--mono);font-size:10px;color:var(--muted2)">· ${c.season}</span></div>
+        <div style="font-size:12px;color:var(--muted2);margin-top:2px">${c.note}</div>
+      </div>
+      <div style="text-align:right;min-width:50px">
+        <div style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--purple)">${c.alt}°</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">altitude</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// STELLAR EVENTS CALENDAR 2026–2027
+// ═══════════════════════════════════════════════════
+const STELLAR_EVENTS=[
+  // Meteor showers
+  {date:'2026-05-06',type:'meteor',name:'Eta Aquariids',zhr:40,notes:"Halley's Comet debris. Best from southern latitudes. (Peak may have passed this week.)"},
+  {date:'2026-07-28',type:'meteor',name:'Delta Aquariids',zhr:20,notes:'Best viewed from tropics. Pre-Perseid warm-up.'},
+  {date:'2026-08-11',type:'meteor',name:'Perseids Peak',zhr:100,notes:"Year's most popular shower. Debris from Comet 109P/Swift-Tuttle. Coincides with 2026 total solar eclipse!"},
+  {date:'2026-10-21',type:'meteor',name:'Orionids',zhr:15,notes:"Halley's Comet debris. Active Oct 2–Nov 7."},
+  {date:'2026-11-17',type:'meteor',name:'Leonids',zhr:15,notes:'Debris from Comet 55P/Tempel-Tuttle. Storm years possible every 33 years.'},
+  {date:'2026-12-13',type:'meteor',name:'Geminids Peak',zhr:150,notes:"Richest shower of the year. Parent body is asteroid 3200 Phaethon — unusually, not a comet."},
+  {date:'2027-01-03',type:'meteor',name:'Quadrantids',zhr:120,notes:'Sharp brief peak. Parent body: asteroid 2003 EH1.'},
+  {date:'2027-04-22',type:'meteor',name:'Lyrids',zhr:18,notes:'Debris from Comet C/1861 G1 Thatcher.'},
+  {date:'2027-05-06',type:'meteor',name:'Eta Aquariids',zhr:40,notes:"Annual return of Halley's Comet debris trail."},
+  {date:'2027-08-12',type:'meteor',name:'Perseids',zhr:100,notes:'Annual summer classic. Swift-Tuttle debris.'},
+  // Eclipses
+  {date:'2026-08-12',type:'eclipse',name:'Total Solar Eclipse',notes:'Path: Greenland, Iceland, northern Spain, North Africa. Totality up to 2m18s. Path crosses during Perseid shower peak!'},
+  {date:'2026-08-28',type:'eclipse',name:'Partial Lunar Eclipse',notes:'Visible: Americas, Europe, Africa, W. Asia. Max 93.9% umbral coverage.'},
+  {date:'2027-02-06',type:'eclipse',name:'Annular Solar Eclipse',notes:'Path: Chile, Argentina, southern Atlantic, East Africa.'},
+  {date:'2027-07-02',type:'eclipse',name:'Partial Lunar Eclipse',notes:'Visible across Pacific, Americas, Europe and Africa.'},
+  // Oppositions & notable events
+  {date:'2026-07-27',type:'planet',name:'Saturn at Opposition',notes:'Saturn rises at sunset, all-night viewing. Best apparition of 2026.'},
+  {date:'2026-09-23',type:'planet',name:'Jupiter at Opposition',notes:'Jupiter at its brightest for 2026. Visible all night.'},
+  {date:'2026-10-22',type:'planet',name:'Uranus at Opposition',notes:'Mag +5.7 — barely naked eye, superb in binoculars.'},
+  {date:'2027-02-19',type:'planet',name:'Mars at Opposition',notes:'Finest Mars apparition since 2020. Red planet prominent all night.'},
+  {date:'2026-06-19',type:'planet',name:'Mercury Retrograde Begins',notes:'Mercury retrograde in Cancer. Communications, travel, tech — review before launch.'},
+];
+
+const EVENT_TYPE_STYLE={
+  meteor:{icon:'☄',color:'var(--sky)',bg:'rgba(79,195,247,0.07)',border:'rgba(79,195,247,0.2)'},
+  eclipse:{icon:'🌑',color:'var(--red)',bg:'rgba(252,129,129,0.07)',border:'rgba(252,129,129,0.2)'},
+  planet:{icon:'🪐',color:'var(--purple)',bg:'rgba(159,122,234,0.07)',border:'rgba(159,122,234,0.2)'},
+};
+
+function renderStellarEvents(){
+  const panel=$('stellar-events-panel'); if(!panel) return;
+  const now=new Date();
+  const future=STELLAR_EVENTS
+    .map(e=>({...e,dt:new Date(e.date)}))
+    .filter(e=>e.dt>=new Date(now-7*86400000)) // include last 7 days
+    .sort((a,b)=>a.dt-b.dt)
+    .slice(0,10);
+  if(!future.length){panel.innerHTML='<div class="err">No upcoming events found</div>';return;}
+  panel.innerHTML=future.map(e=>{
+    const daysAway=Math.ceil((e.dt-now)/86400000);
+    const dayLbl=daysAway<=0?'Today/passed':daysAway===1?'Tomorrow':`In ${daysAway} days`;
+    const dateFmt=e.dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const st=EVENT_TYPE_STYLE[e.type]||EVENT_TYPE_STYLE.planet;
+    return `<div style="display:flex;gap:10px;padding:9px 10px;background:${st.bg};border:1px solid ${st.border};border-radius:6px;margin-bottom:7px">
+      <div style="font-size:20px;line-height:1.2">${st.icon}</div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap">
+          <div style="font-size:13px;font-weight:500;color:#fff">${e.name}</div>
+          <div style="font-family:var(--mono);font-size:11px;color:${st.color}">${dayLbl}</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted2);margin-top:1px">${dateFmt}</div>
+        <div style="font-size:12px;color:var(--muted2);margin-top:4px;line-height:1.5">${e.notes}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// UPDATED renderPlanetary — adds positions table
+// ═══════════════════════════════════════════════════
 
 // MAIN LOAD
 async function loadAll() {
@@ -1232,6 +1602,8 @@ async function loadAll() {
 
   renderMoon();
   renderPlanetary();
+  renderNightSky();
+  renderStellarEvents();
 
   const results = await Promise.allSettled([
     fetchWeather(), fetchSolar(), fetchTides(),
