@@ -328,8 +328,8 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
           <div class="kpi-box">
-            <div class="kpi-l">Heat Index</div>
-            <div class="kpi-v e" id="cf-heatindex">--</div>
+            <div class="kpi-l">Humidex</div>
+            <div class="kpi-v e" id="cf-humidex">--</div>
           </div>
           <div class="kpi-box">
             <div class="kpi-l">Dew Spread</div>
@@ -489,70 +489,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 
     <!-- SYNOPTIC TAB -->
     <div class="map-pane" id="pane-synoptic">
-      <div class="overlay-bar" style="flex-direction:column;align-items:flex-start;gap:6px;padding:10px 14px">
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Overlay</span>
-          <button class="ov-btn active" data-windy-overlay="pressure">Isobars</button>
-          <button class="ov-btn" data-windy-overlay="wind">Wind</button>
-          <button class="ov-btn" data-windy-overlay="rain">Rain</button>
-          <button class="ov-btn" data-windy-overlay="temp">Temp</button>
-          <button class="ov-btn" data-windy-overlay="dewpoint">Dewpoint</button>
-          <button class="ov-btn" data-windy-overlay="clouds">Clouds</button>
-          <button class="ov-btn" data-windy-overlay="cape">CAPE</button>
-          <button class="ov-btn" data-windy-overlay="snowAccu">Snow</button>
-          <button class="ov-btn" data-windy-overlay="fog">Fog</button>
-          <button class="ov-btn" data-windy-overlay="visibility">Visibility</button>
-          <button class="ov-btn" data-windy-overlay="thunderstorms">⚡ Storms</button>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Level</span>
-          <button class="ov-btn active" data-windy-level="surface">Surface</button>
-          <button class="ov-btn" data-windy-level="850h">850 hPa</button>
-          <button class="ov-btn" data-windy-level="500h">500 hPa</button>
-          <button class="ov-btn" data-windy-level="300h">300 hPa</button>
-          <div class="ov-sep"></div>
-          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;margin-right:4px">Model</span>
-          <button class="ov-btn active" data-windy-model="ecmwf">ECMWF</button>
-          <button class="ov-btn" data-windy-model="gfs">GFS</button>
-          <button class="ov-btn" data-windy-model="namConus">NAM</button>
-          <button class="ov-btn" data-windy-model="iconEu">ICON</button>
-          <button class="ov-btn" data-windy-model="meto">UK Met</button>
-          <button class="ov-btn" data-windy-model="arome">AROME</button>
-        </div>
-      </div>
-      <iframe id="windy-frame" class="map-frame" src="about:blank" loading="lazy" title="Windy synoptic map"></iframe>
-    </div>
-
-    <!-- MARINE TAB — Premium Ventusky layers unlock when logged in at ventusky.com in same browser -->
-    <div class="map-pane" id="pane-marine">
-      <div class="overlay-bar" style="flex-direction:column;align-items:flex-start;gap:6px;padding:10px 14px">
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Marine</span>
-          <button class="ov-btn active" data-vtk-layer="waves">Wave Ht</button>
-          <button class="ov-btn" data-vtk-layer="swell-height">Swell Ht</button>
-          <button class="ov-btn" data-vtk-layer="swell-period">Swell Period</button>
-          <button class="ov-btn" data-vtk-layer="sea-currents">Currents</button>
-          <button class="ov-btn" data-vtk-layer="sea-temperature">Sea Temp</button>
-          <button class="ov-btn" data-vtk-layer="gust">Gusts</button>
-          <button class="ov-btn" data-vtk-layer="wind-surface">Wind</button>
-          <button class="ov-btn" data-vtk-layer="pressure-msl">Pressure</button>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Storm</span>
-          <button class="ov-btn" data-vtk-layer="cape">CAPE</button>
-          <button class="ov-btn" data-vtk-layer="wind-shear-0-6km">Wind Shear</button>
-          <button class="ov-btn" data-vtk-layer="cin">CIN</button>
-          <button class="ov-btn" data-vtk-layer="lifted-index">Lifted Idx</button>
-          <button class="ov-btn" data-vtk-layer="storm-relative-helicity">Helicity</button>
-          <button class="ov-btn" data-vtk-layer="rain-3h">Rain</button>
-          <button class="ov-btn" data-vtk-layer="freezing-rain">Frz Rain</button>
-          <div class="ov-sep"></div>
-          <a href="https://www.ventusky.com" target="_blank" rel="noopener"
-             style="font-family:var(--mono);font-size:9px;color:var(--sky);text-decoration:none;padding:5px 9px;border:1px solid rgba(79,195,247,0.3);border-radius:4px">
-            Open Ventusky (Premium) →
-          </a>
-        </div>
-      </div>
       <iframe id="ventusky-marine-frame" class="map-frame" src="about:blank" loading="lazy" title="Ventusky marine map"></iframe>
       <div id="predictwind-slot" style="padding:14px;background:var(--bg3);border-top:1px solid var(--border)">
         <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ember);margin-bottom:8px">PredictWind</div>
@@ -575,34 +511,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 
     <!-- SATELLITE TAB -->
     <div class="map-pane" id="pane-satellite">
-      <div class="overlay-bar" style="flex-direction:column;align-items:flex-start;gap:6px;padding:10px 14px">
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">Atmos</span>
-          <button class="ov-btn active" data-vtk-sat-layer="clouds-surface">Clouds</button>
-          <button class="ov-btn" data-vtk-sat-layer="temperature-2m">Temp 2m</button>
-          <button class="ov-btn" data-vtk-sat-layer="temperature-850h">Temp 850</button>
-          <button class="ov-btn" data-vtk-sat-layer="humidity-surface">Humidity</button>
-          <button class="ov-btn" data-vtk-sat-layer="dew-point">Dewpoint</button>
-          <button class="ov-btn" data-vtk-sat-layer="visibility">Visibility</button>
-          <button class="ov-btn" data-vtk-sat-layer="fog">Fog</button>
-          <button class="ov-btn" data-vtk-sat-layer="snowcover">Snow Cover</button>
-          <button class="ov-btn" data-vtk-sat-layer="snow-3h">Snowfall</button>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;width:100%">
-          <span style="font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;width:52px;flex-shrink:0">★ Prem</span>
-          <button class="ov-btn" data-vtk-sat-layer="cape">CAPE</button>
-          <button class="ov-btn" data-vtk-sat-layer="wind-shear-0-6km">Wind Shear</button>
-          <button class="ov-btn" data-vtk-sat-layer="lifted-index">Lifted Idx</button>
-          <button class="ov-btn" data-vtk-sat-layer="cin">CIN</button>
-          <button class="ov-btn" data-vtk-sat-layer="storm-relative-helicity">Helicity</button>
-          <button class="ov-btn" data-vtk-sat-layer="ozone">Ozone</button>
-          <div class="ov-sep"></div>
-          <a href="https://www.ventusky.com" target="_blank" rel="noopener"
-             style="font-family:var(--mono);font-size:9px;color:var(--sky);text-decoration:none;padding:5px 9px;border:1px solid rgba(79,195,247,0.3);border-radius:4px">
-            Open Ventusky (Premium) →
-          </a>
-        </div>
-      </div>
       <iframe id="ventusky-sat-frame" class="map-frame" src="about:blank" loading="lazy" title="Ventusky satellite"></iframe>
     </div>
 
@@ -954,7 +862,16 @@ async function fetchTides() {
   return { hilo, curve, station: st };
 }
 
-async function fetchKp() { return fetchJSON('https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json'); }
+async function fetchKp() {
+  // Try primary endpoint first; if it fails or returns no valid data, try backup
+  const PRIMARY = 'https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json';
+  const BACKUP  = 'https://services.swpc.noaa.gov/products/noaa-estimated-planetary-k-index-1-minute.json';
+  try {
+    const data = await fetchJSON(PRIMARY);
+    if(Array.isArray(data) && data.length > 1) return data;
+  } catch(e) { console.warn('Kp primary failed:', e); }
+  return fetchJSON(BACKUP);
+}
 async function fetchSolarWind() {
   const [mag, plasma] = await Promise.all([
     fetchJSON('https://services.swpc.noaa.gov/products/solar-wind/mag-1-day.json'),
@@ -1126,24 +1043,29 @@ function renderWeather(data) {
   if(comfortCursor){
     // Map dew spread 0–20°C to comfort 0–100% (0=oppressive, 20=very dry)
     // Comfortable zone is around 10–16°C spread
-    const pct=Math.max(0,Math.min(100,(dewSpreadC/20)*100));
+    const pct=Math.max(0,Math.min(100,(1-dewSpreadC/20)*100)); // inverted: low spread = humid/right
     comfortCursor.style.left=pct+'%';
   }
 
-  // Heat index
-  const tempF=STATE.useFahrenheit?toF(c.temperature_2m):toF(c.temperature_2m);
-  const hiF=heatIndex(tempF, c.relative_humidity_2m);
-  if(hiF!==null){
-    const hiDisp=STATE.useFahrenheit?hiF.toFixed(1)+'°F':((hiF-32)/1.8).toFixed(1)+'°C';
-    set('cf-heatindex', hiDisp);
-    const hiEl=$('cf-heatindex'); if(hiEl) hiEl.style.color=hiF>=103?'var(--red)':hiF>=91?'var(--ember)':'var(--gold)';
-  } else {
-    set('cf-heatindex', 'N/A');
-    const hiEl=$('cf-heatindex'); if(hiEl) hiEl.style.color='var(--muted2)';
-  }
+  // Humidex (Canadian comfort index)
+  const Td=c.dew_point_2m, Tc=c.temperature_2m;
+  const eDew=6.112*Math.exp(5417.7530*(1/273.16-1/(273.16+Td)));
+  const humidex=Tc+0.5555*(eDew-10);
+  const humidexDisp=STATE.useFahrenheit?(humidex*9/5+32).toFixed(1)+'°F':humidex.toFixed(1)+'°C';
+  set('cf-humidex', humidexDisp);
+  const hxEl=$('cf-humidex');
+  if(hxEl) hxEl.style.color=humidex>=46?'var(--red)':humidex>=40?'var(--ember)':humidex>=30?'var(--gold)':'var(--green)';
   set('cf-dewspread', dewSpreadC.toFixed(1)+'°C');
-  set('cf-pres-mmhg', (c.surface_pressure*0.750064).toFixed(0));
-  set('cf-pres-hpa', c.surface_pressure.toFixed(1)+' hPa');
+
+  // Cloud base (Lifted Condensation Level) — LCL ≈ spread × 125m
+  const lclM=Math.round(dewSpreadC*125);
+  const lclFt=Math.round(lclM*3.28084);
+  set('cf-cloudbase', lclM.toLocaleString()+' m');
+  set('cf-cloudbase-ft', lclFt.toLocaleString()+' ft AGL');
+
+  // Absolute humidity (g/m³)
+  const absHum=(6.112*Math.exp(17.67*Tc/(Tc+243.5))*c.relative_humidity_2m*2.1674/(273.15+Tc)).toFixed(1);
+  set('cf-abshum', absHum+' g/m³');
 
   set('tl-solar-decl', decl.toFixed(2)+'°');
   set('tl-solar-decl-note', decl>0.5?'☀ N hemisphere':decl<-0.5?'☀ S hemisphere':'⚖ Near equator');
@@ -1323,32 +1245,43 @@ function renderTides({ hilo, curve, station }) {
 
 // KP — robust parser
 function renderKp(rawData) {
-  // Format observed: [["time_tag","Kp","a_running","station_count"], ["2026-05-20 00:00:00","2.33","2.33","8"], ...]
-  // The first row is header. Some data rows may have null/NaN in Kp slot.
   if(!Array.isArray(rawData) || rawData.length < 2) {
+    set('kp-val','--'); set('kp-lbl','No data'); return;
+  }
+
+  // Handle BOTH formats NOAA uses:
+  // Array-of-arrays: [["time_tag","Kp",...], ["2026-05-22 09:00:00","2.33",...], ...]
+  // Array-of-objects: [{"time_tag":"...","Kp":2.33,...}, ...]
+  function extractRow(r) {
+    if(Array.isArray(r)) {
+      // Try columns 1-4 for a valid Kp (0.00-9.00)
+      for(let i=1;i<Math.min(r.length,5);i++){
+        const v=parseFloat(r[i]);
+        if(!isNaN(v)&&v>=0&&v<=9) return {time:String(r[0]),kp:v};
+      }
+    } else if(r&&typeof r==='object') {
+      // Object format — look for Kp/kp/estimated_kp key
+      const keys=['Kp','kp','estimated_kp','kp_index','a_running'];
+      for(const k of keys){
+        const v=parseFloat(r[k]);
+        if(!isNaN(v)&&v>=0&&v<=9) return {time:String(r.time_tag||r.time||''),kp:v};
+      }
+    }
+    return null;
+  }
+
+  // Skip header row if it's a string array
+  const rows = Array.isArray(rawData[0]) && typeof rawData[0][0]==='string' && isNaN(parseFloat(rawData[0][1]))
+    ? rawData.slice(1) : rawData;
+
+  const parsed = rows.map(extractRow).filter(Boolean);
+
+  if(!parsed.length) {
     set('kp-val','--'); set('kp-lbl','No data available'); return;
   }
 
-  // Skip header row, parse all data rows
-  const dataRows = rawData.slice(1);
-  const parsed = dataRows.map(r => {
-    if(!Array.isArray(r)) return null;
-    // Try multiple column positions defensively in case format changes
-    let kp = NaN;
-    for(let i = 1; i < Math.min(r.length, 4); i++) {
-      const v = parseFloat(r[i]);
-      if(!isNaN(v) && v >= 0 && v <= 9) { kp = v; break; }
-    }
-    return { time: r[0], kp };
-  }).filter(p => p && !isNaN(p.kp));
-
-  if(!parsed.length) {
-    set('kp-val','--'); set('kp-lbl','No data available');
-    return;
-  }
-
-  const latest = parsed[parsed.length - 1];
-  const kpVal = latest.kp;
+  const latest = parsed[parsed.length-1];
+  const kpVal  = latest.kp;
 
   const kpEl=$('kp-val');
   if(kpEl){ kpEl.textContent=kpVal.toFixed(2); kpEl.style.color=kpColor(kpVal); }
@@ -1359,39 +1292,26 @@ function renderKp(rawData) {
   if(bar){
     bar.innerHTML='';
     for(let i=0;i<9;i++){
-      const seg=document.createElement('div');
-      seg.className='kp-seg';
-      if(i<Math.round(kpVal)){ seg.classList.add('on'); if(i>=6)seg.classList.add('storm'); else if(i>=4)seg.classList.add('mod'); }
+      const seg=document.createElement('div'); seg.className='kp-seg';
+      if(i<Math.round(kpVal)){seg.classList.add('on');if(i>=6)seg.classList.add('storm');else if(i>=4)seg.classList.add('mod');}
       bar.appendChild(seg);
     }
   }
 
-  const recent = parsed.slice(-8);
+  const recent=parsed.slice(-8);
   destroyChart('kp');
   const kctx=$('kp-chart');
-  if(kctx) STATE.charts.kp = new Chart(kctx,{
+  if(kctx) STATE.charts.kp=new Chart(kctx,{
     type:'bar',
-    data:{
-      labels: recent.map(p => p.time.slice(11,16)),
-      datasets:[{
-        data: recent.map(p => p.kp),
-        backgroundColor: recent.map(p => kpColor(p.kp)+'AA'),
-        borderColor: recent.map(p => kpColor(p.kp)),
-        borderWidth: 1,
-      }]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{family:CD.mono,size:9},color:CD.tick}},
-        y:{min:0,max:9,grid:{color:CD.grid},ticks:{font:{family:CD.mono,size:9},color:CD.tick,stepSize:3}}
-      }
-    }
+    data:{labels:recent.map(p=>p.time.slice(11,16)),
+      datasets:[{data:recent.map(p=>p.kp),backgroundColor:recent.map(p=>kpColor(p.kp)+'AA'),borderColor:recent.map(p=>kpColor(p.kp)),borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{font:{family:CD.mono,size:9},color:CD.tick}},
+        y:{min:0,max:9,grid:{color:CD.grid},ticks:{font:{family:CD.mono,size:9},color:CD.tick,stepSize:3}}}}
   });
-
   return kpVal;
 }
+
 
 function renderSolarWind({ mag, plasma }) {
   if(!Array.isArray(mag) || !Array.isArray(plasma) || mag.length < 2 || plasma.length < 2) return;
@@ -2253,7 +2173,7 @@ async function fetchWindyModels() {
     fetch('https://api.windy.com/api/point-forecast/v2',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({lat:STATE.lat,lon:STATE.lng,model,
-        parameters:['wind','windGust','pressure','temp'],levels:['surface'],key:CONFIG.windyApiKey})
+        parameters:['wind_u','wind_v','windGust','temp'],levels:['surface'],key:CONFIG.windyApiKey})
     }).then(r=>r.json()).then(d=>({model,data:d}))
   ));
   const badge=document.getElementById('model-compare-badge');
@@ -2274,8 +2194,9 @@ async function fetchWindyModels() {
     const wv=(data['wind_v-surface']||[])[ci]||0;
     const wsKt=(Math.sqrt(wu*wu+wv*wv)*1.94384).toFixed(1);
     const wdDeg=((Math.atan2(-wu,-wv)*180/Math.PI)+360)%360;
-    const pHpa=((data['pressure-surface']||[])[ci]||101325)/100;
-    const pMmhg=(pHpa*0.750064).toFixed(0);
+    const pRaw=(data['pressure-surface']||data['msl-surface']||[])[ci]||null;
+    const pHpa=pRaw?pRaw>10000?pRaw/100:pRaw:null;
+    const pMmhg=pHpa?(pHpa*0.750064).toFixed(0):'--';
     const tK=(data['temp-surface']||[])[ci]||273;
     const tDisp=STATE.useFahrenheit?((tK-273.15)*9/5+32).toFixed(1)+'°F':(tK-273.15).toFixed(1)+'°C';
     const gustKt=((data['windGust-surface']||[])[ci]||0)*1.94384;
