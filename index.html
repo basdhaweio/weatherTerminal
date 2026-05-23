@@ -195,6 +195,30 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .footer-ref { font-family:var(--mono); font-size:10px; letter-spacing:0.2em; color:var(--muted); text-transform:uppercase; }
 
 
+
+  /* EXTREME EVENTS */
+  .evt-filter-btn { background:var(--bg3); border:1px solid var(--border2); color:var(--muted2); font-family:var(--mono); font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:5px 10px; border-radius:4px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+  .evt-filter-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .evt-filter-btn.active { background:var(--gold-dim); border-color:var(--gold); color:var(--gold); }
+  #events-map { height:360px; background:var(--bg3); }
+  .evt-card { background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:10px 12px; display:flex; gap:10px; align-items:flex-start; }
+  .evt-icon { font-size:22px; flex-shrink:0; line-height:1.2; }
+  .evt-title { font-size:13px; font-weight:500; color:#fff; line-height:1.4; }
+  .evt-meta { font-family:var(--mono); font-size:10px; color:var(--muted2); margin-top:3px; }
+  .evt-badge { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:2px 6px; border-radius:3px; display:inline-block; margin-bottom:4px; }
+  .ssn-big { font-family:var(--mono); font-size:52px; font-weight:700; line-height:1; color:#fff; }
+  .ssn-lbl { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted2); margin-bottom:5px; }
+  .ar-row { display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:var(--bg3); border-radius:5px; margin-bottom:6px; }
+  .ar-num { font-family:var(--mono); font-size:13px; font-weight:700; color:#fff; }
+  .ar-class { font-family:var(--mono); font-size:11px; font-weight:700; padding:2px 7px; border-radius:3px; }
+  .neo-row { padding:8px 10px; background:var(--bg3); border-radius:5px; margin-bottom:6px; }
+  .neo-name { font-size:13px; font-weight:500; color:#fff; }
+  .neo-stats { display:flex; gap:12px; margin-top:5px; flex-wrap:wrap; }
+  .neo-stat { font-family:var(--mono); font-size:11px; color:var(--muted2); }
+  #iss-map { height:200px; background:var(--bg3); border-radius:6px; overflow:hidden; margin-bottom:12px; }
+  .fb-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); font-size:12px; }
+  .fb-row:last-child { border-bottom:none; }
+
   /* MAP PANEL */
   .map-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); background:var(--bg3); flex-wrap:wrap; }
   .map-tab-btn { background:none; border:none; border-bottom:2px solid transparent; color:var(--muted2); font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:10px 18px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
@@ -547,30 +571,48 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
     </div>
   </div>
 
-  <div class="sec-label">Scale 03 — Synoptic &amp; Macro Patterns</div>
-  <div class="afd-panel">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
-      <div>
-        <div style="font-family:var(--mono);font-size:11px;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase">Area Forecast Discussion</div>
-        <div style="font-size:13px;color:var(--muted2);margin-top:4px" id="afd-source">NWS meteorologist synopsis · US locations only</div>
+  <div class="sec-label">Scale 03 — Extreme &amp; Synoptic Patterns</div>
+
+  <!-- EXTREME EVENTS MAP -->
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--red);text-transform:uppercase">Extreme Weather &amp; Natural Events</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="evt-filter-btn active" data-evt-filter="all">All</button>
+        <button class="evt-filter-btn" data-evt-filter="wildfires">🔥 Fire</button>
+        <button class="evt-filter-btn" data-evt-filter="severeStorms">⛈️ Storm</button>
+        <button class="evt-filter-btn" data-evt-filter="tropicalCyclones">🌀 Cyclone</button>
+        <button class="evt-filter-btn" data-evt-filter="earthquakes">💠 Quake</button>
+        <button class="evt-filter-btn" data-evt-filter="volcanoes">🌋 Volcano</button>
+        <button class="evt-filter-btn" data-evt-filter="floods">🌊 Flood</button>
+        <button class="evt-filter-btn" data-evt-filter="drought">🌵 Drought</button>
       </div>
-      <div style="font-family:var(--mono);font-size:11px;color:var(--muted2)" id="afd-issued">--</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)" id="events-updated">--</div>
     </div>
-    <div class="afd-text" id="afd-text"><span class="loading">Loading forecast discussion</span></div>
-    </div>
-    <div class="card">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--green);text-transform:uppercase;margin-bottom:12px">Folk / Empirical Forecast</div>
-      <div style="font-size:14px;line-height:1.85;color:var(--text);font-style:italic" id="farmers-text"><span class="loading">Reading the signs</span></div>
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div class="kpi-box"><div class="kpi-l">Pressure Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-pres-sig">--</div></div>
-          <div class="kpi-box"><div class="kpi-l">Wind Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-wind-sig">--</div></div>
-          <div class="kpi-box"><div class="kpi-l">Humidity Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-hum-sig">--</div></div>
-          <div class="kpi-box"><div class="kpi-l">Moon Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-moon-sig">--</div></div>
-        </div>
+    <div id="events-map"></div>
+    <div style="padding:14px">
+      <div id="events-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="loading">Loading events…</div>
       </div>
-      <div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);font-style:italic">Pressure · wind direction · dew spread · lunar phase heuristics</div>
+      <div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);text-align:right">
+        NASA EONET · USGS Earthquake Hazards · NOAA NHC
+      </div>
     </div>
+  </div>
+
+  <!-- FOLK FORECAST -->
+  <div class="card">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.2em;color:var(--green);text-transform:uppercase;margin-bottom:12px">Folk / Empirical Forecast</div>
+    <div style="font-size:14px;line-height:1.85;color:var(--text);font-style:italic" id="farmers-text"><span class="loading">Reading the signs</span></div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+        <div class="kpi-box"><div class="kpi-l">Pressure Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-pres-sig">--</div></div>
+        <div class="kpi-box"><div class="kpi-l">Wind Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-wind-sig">--</div></div>
+        <div class="kpi-box"><div class="kpi-l">Humidity Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-hum-sig">--</div></div>
+        <div class="kpi-box"><div class="kpi-l">Moon Signal</div><div style="font-family:var(--mono);font-size:14px;font-weight:700;margin-top:4px" id="folk-moon-sig">--</div></div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);font-style:italic">Pressure · wind direction · dew spread · lunar phase heuristics</div>
   </div>
 
   <div class="sec-label">Scale 04 — Space Weather</div>
@@ -646,6 +688,78 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
     </div>
 
   </div><!-- /space-row -->
+
+  <!-- SUNSPOT + SOLAR REGIONS (2-col) -->
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px">
+    <div class="card">
+      <div class="card-lbl">Sunspot Activity</div>
+      <div class="ssn-lbl">Daily Sunspot Number</div>
+      <div class="ssn-big" id="ssn-val">--</div>
+      <div style="font-size:12px;color:var(--muted2);margin-top:4px" id="ssn-date">--</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+        <div class="kpi-box"><div class="kpi-l">F10.7 Radio Flux</div><div class="kpi-v" id="ssn-f107" style="color:var(--gold)">--</div></div>
+        <div class="kpi-box"><div class="kpi-l">Solar Cycle</div><div class="kpi-v" id="ssn-cycle" style="color:var(--purple);font-size:14px">Cycle 25</div></div>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:rgba(159,122,234,0.07);border:1px solid rgba(159,122,234,0.2);border-radius:6px">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--purple);text-transform:uppercase;margin-bottom:5px">Cycle 25 Status</div>
+        <div style="font-size:13px;color:var(--text)" id="ssn-status">Loading…</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Active Solar Regions</div>
+      <div id="solar-regions-panel"><div class="loading">Loading active regions</div></div>
+    </div>
+  </div>
+
+  <!-- SOLAR CYCLE CHART (full-width) -->
+  <div class="card">
+    <div class="chart-title">Solar Cycle 25 — Sunspot Progression</div>
+    <div class="chart-sub">Observed monthly sunspot number vs predicted range (NOAA/NASA Panel)</div>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-sw" style="background:var(--ember)"></div>Observed SSN</div>
+      <div class="legend-item"><div class="legend-sw" style="background:rgba(159,122,234,0.5)"></div>Predicted range</div>
+      <div class="legend-item"><div class="legend-sw dash" style="border-color:var(--sky)"></div>Current</div>
+    </div>
+    <div class="chart-wrap" style="height:200px"><canvas id="solar-cycle-chart"></canvas></div>
+  </div>
+
+  <!-- NEO ASTEROIDS + ISS (2-col) -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card">
+      <div class="card-lbl">Near-Earth Objects — Next 7 Days</div>
+      <div id="neo-panel"><div class="loading">Loading asteroid data</div></div>
+      <div style="margin-top:8px;font-family:var(--mono);font-size:9px;color:var(--muted)">NASA NeoWs · DEMO_KEY · distances in lunar units (LD)</div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">ISS Real-Time Tracker</div>
+      <div id="iss-map"></div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+        <div class="kpi-box"><div class="kpi-l">Latitude</div><div class="kpi-v" id="iss-lat" style="font-size:15px;color:var(--sky)">--</div></div>
+        <div class="kpi-box"><div class="kpi-l">Longitude</div><div class="kpi-v" id="iss-lng" style="font-size:15px;color:var(--sky)">--</div></div>
+        <div class="kpi-box"><div class="kpi-l">Altitude</div><div class="kpi-v" id="iss-alt" style="font-size:15px;color:var(--green)">--</div></div>
+        <div class="kpi-box"><div class="kpi-l">Velocity</div><div class="kpi-v" id="iss-vel" style="font-size:15px;color:var(--gold)">--</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--muted2)">
+        <span id="iss-visibility">--</span>
+        <span id="iss-updated">--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEO FORECAST + FIREBALLS (2-col) -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card">
+      <div class="card-lbl">3-Day Geomagnetic Forecast</div>
+      <div class="chart-wrap" style="height:120px"><canvas id="geo-forecast-chart"></canvas></div>
+      <div id="geo-forecast-text" style="margin-top:10px;font-size:12px;color:var(--muted2);line-height:1.6"></div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">Recent Fireballs (NASA CNEOS)</div>
+      <div id="fireball-panel"><div class="loading">Loading fireball data</div></div>
+      <div style="margin-top:8px;font-family:var(--mono);font-size:9px;color:var(--muted)">Bolide events detected by US Government sensors</div>
+    </div>
+  </div>
+
 
   <!-- PLANETARY ALMANAC -->
   <div class="card" id="planet-card">
@@ -882,12 +996,6 @@ async function fetchSolarWind() {
 async function fetchFlares() { return fetchJSON('https://services.swpc.noaa.gov/json/goes/primary/xray-flares-latest.json'); }
 async function fetchSwpcAlerts() { return fetchJSON('https://services.swpc.noaa.gov/products/alerts.json'); }
 async function fetchNwsAlerts() { return fetchJSON(`https://api.weather.gov/alerts/active?point=${STATE.lat},${STATE.lng}`); }
-async function fetchAfd() {
-  const pts = await fetchJSON(`https://api.weather.gov/points/${STATE.lat},${STATE.lng}`);
-  const office = pts.properties.cwa;
-  const products = await fetchJSON(`https://api.weather.gov/products/types/AFD/locations/${office}`);
-  return fetchJSON(products['@graph'][0]['@id']);
-}
 
 // RENDERERS
 function renderWeather(data) {
@@ -1387,17 +1495,6 @@ function renderNwsAlerts(data) {
   }).join('');
 }
 
-function renderAfd(data) {
-  const te=$('afd-text'), src=$('afd-source'), iss=$('afd-issued');
-  if(!te) return;
-  if(!data||!data.productText){
-    te.innerHTML='<span class="err">AFD only available for US locations. For international coordinates, check your regional met service.</span>';
-    return;
-  }
-  te.textContent=data.productText.replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
-  if(src&&data.issuingOffice) src.textContent=`NWS ${data.issuingOffice} · Area Forecast Discussion`;
-  if(iss&&data.issuanceTime) iss.textContent=new Date(data.issuanceTime).toLocaleString();
-}
 
 function renderAuroraEstimate(kpVal) {
   if(typeof kpVal !== 'number' || isNaN(kpVal)) return;
@@ -2225,6 +2322,391 @@ function initMaps() {
   if(CONFIG.windyApiKey) fetchWindyModels();
 }
 
+// ═══════════════════════════════════════════════════
+// EXTREME EVENTS — NASA EONET + USGS + NHC
+// ═══════════════════════════════════════════════════
+const EONET_CAT = {
+  wildfires:       { icon:'🔥', color:'#FF6B35', bg:'rgba(255,107,53,0.12)', label:'Wildfire' },
+  severeStorms:    { icon:'⛈️', color:'#4FC3F7', bg:'rgba(79,195,247,0.10)', label:'Severe Storm' },
+  tropicalCyclones:{ icon:'🌀', color:'#9F7AEA', bg:'rgba(159,122,234,0.10)', label:'Tropical Cyclone' },
+  earthquakes:     { icon:'💠', color:'#C8974A', bg:'rgba(200,151,74,0.10)', label:'Earthquake' },
+  floods:          { icon:'🌊', color:'#48BB78', bg:'rgba(72,187,120,0.10)', label:'Flood' },
+  volcanoes:       { icon:'🌋', color:'#FC8181', bg:'rgba(252,129,129,0.12)', label:'Volcano' },
+  drought:         { icon:'🌵', color:'#C8974A', bg:'rgba(200,151,74,0.08)', label:'Drought' },
+  landslides:      { icon:'⛰️', color:'#8A9BB0', bg:'rgba(138,155,176,0.10)', label:'Landslide' },
+  dustHaze:        { icon:'🌫️', color:'#8A9BB0', bg:'rgba(138,155,176,0.08)', label:'Dust/Haze' },
+  snow:            { icon:'❄️', color:'#E2E8F0', bg:'rgba(226,232,240,0.06)', label:'Snow/Ice' },
+  tempExtremes:    { icon:'🌡️', color:'#FF6B35', bg:'rgba(255,107,53,0.08)', label:'Temp Extreme' },
+  seaLakeIce:      { icon:'🧊', color:'#4FC3F7', bg:'rgba(79,195,247,0.08)', label:'Sea/Lake Ice' },
+};
+
+let EVT_STATE = { all: [], filter: 'all', markers: [], layer: null };
+
+async function fetchExtremeEvents() {
+  const [eonet, quakes, nhc] = await Promise.allSettled([
+    fetchJSON('https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=100&days=14'),
+    fetchJSON('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson'),
+    fetchJSON('https://www.nhc.noaa.gov/CurrentStorms.json'),
+  ]);
+  return { eonet: eonet.status==='fulfilled'?eonet.value:null,
+           quakes: quakes.status==='fulfilled'?quakes.value:null,
+           nhc: nhc.status==='fulfilled'?nhc.value:null };
+}
+
+function normalizeEvents(data) {
+  const evts = [];
+  // NASA EONET
+  if(data.eonet && data.eonet.events) {
+    data.eonet.events.forEach(e => {
+      const catId = e.categories[0]?.id || 'severeStorms';
+      const geom = e.geometries[0];
+      if(!geom) return;
+      const coords = geom.type==='Point' ? geom.coordinates : geom.coordinates[0];
+      evts.push({ id:e.id, title:e.title, catId, date:geom.date, lat:coords[1], lng:coords[0], source:'EONET', link:e.link||'#' });
+    });
+  }
+  // USGS Earthquakes
+  if(data.quakes && data.quakes.features) {
+    data.quakes.features.forEach(f => {
+      const p = f.properties, g = f.geometry;
+      evts.push({ id:'usgs-'+f.id, title:p.title||`M${p.mag} Earthquake`, catId:'earthquakes',
+                  date:new Date(p.time).toISOString(), lat:g.coordinates[1], lng:g.coordinates[0],
+                  mag:p.mag, depth:g.coordinates[2], source:'USGS', link:p.url||'#' });
+    });
+  }
+  // NHC Tropical Storms
+  if(data.nhc && data.nhc.activeStorms) {
+    data.nhc.activeStorms.forEach(s => {
+      evts.push({ id:'nhc-'+s.id, title:`${s.classification} ${s.name}`, catId:'tropicalCyclones',
+                  date:s.lastUpdate||new Date().toISOString(), lat:s.latitude, lng:s.longitude,
+                  intensity:s.intensity, source:'NHC', link:`https://www.nhc.noaa.gov/` });
+    });
+  }
+  return evts.sort((a,b)=>new Date(b.date)-new Date(a.date));
+}
+
+function initEventsMap() {
+  if(MAP.eventsMap || !window.L) return;
+  MAP.eventsMap = L.map('events-map', { zoomControl:true, worldCopyJump:true })
+    .setView([20, -30], 2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:'© OSM © CARTO', subdomains:'abcd', maxZoom:18
+  }).addTo(MAP.eventsMap);
+}
+
+function renderExtremeEvents(data) {
+  initEventsMap();
+  EVT_STATE.all = normalizeEvents(data);
+  set('events-updated', new Date().toLocaleTimeString());
+  applyEventFilter(EVT_STATE.filter);
+}
+
+function applyEventFilter(filter) {
+  EVT_STATE.filter = filter;
+  document.querySelectorAll('.evt-filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.evtFilter === filter));
+  const shown = filter==='all' ? EVT_STATE.all : EVT_STATE.all.filter(e=>e.catId===filter);
+
+  // Clear old markers
+  EVT_STATE.markers.forEach(m => MAP.eventsMap && MAP.eventsMap.removeLayer(m));
+  EVT_STATE.markers = [];
+
+  // Add markers
+  shown.forEach(e => {
+    if(!isFinite(e.lat)||!isFinite(e.lng)) return;
+    const cat = EONET_CAT[e.catId] || EONET_CAT.severeStorms;
+    const mag = e.mag ? ` M${e.mag.toFixed(1)}` : '';
+    const marker = L.circleMarker([e.lat, e.lng], {
+      radius: e.mag ? Math.max(5, e.mag*1.5) : 6,
+      color: cat.color, fillColor: cat.color, fillOpacity: 0.7, weight: 1.5
+    }).bindPopup(`<div style="font-family:monospace;font-size:12px;min-width:180px">
+      <b>${cat.icon} ${e.title}${mag}</b><br>
+      <span style="color:#8A9BB0">${new Date(e.date).toLocaleDateString()} · ${e.source}</span>
+      ${e.depth ? `<br>Depth: ${e.depth.toFixed(0)} km` : ''}
+    </div>`);
+    if(MAP.eventsMap) marker.addTo(MAP.eventsMap);
+    EVT_STATE.markers.push(marker);
+  });
+
+  // Events grid — top 12
+  const grid = document.getElementById('events-grid');
+  if(!grid) return;
+  if(!shown.length) { grid.innerHTML='<div class="err">No active events for this filter</div>'; return; }
+  grid.innerHTML = shown.slice(0,12).map(e => {
+    const cat = EONET_CAT[e.catId] || EONET_CAT.severeStorms;
+    const mag = e.mag ? ` · M${e.mag.toFixed(1)}` : '';
+    const daysAgo = Math.floor((Date.now()-new Date(e.date))/86400000);
+    const daysLbl = daysAgo===0?'Today':daysAgo===1?'Yesterday':`${daysAgo}d ago`;
+    return `<div class="evt-card" style="border-left:2px solid ${cat.color}">
+      <div class="evt-icon">${cat.icon}</div>
+      <div style="flex:1;min-width:0">
+        <span class="evt-badge" style="background:${cat.bg};color:${cat.color}">${cat.label}${mag}</span>
+        <div class="evt-title">${e.title}</div>
+        <div class="evt-meta">${daysLbl} · ${e.source}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// SOLAR CYCLE + SUNSPOTS
+// ═══════════════════════════════════════════════════
+async function fetchSolarCycle() {
+  const [obs, pred] = await Promise.all([
+    fetchJSON('https://services.swpc.noaa.gov/json/solar-cycle/observed-solar-cycle-indices.json'),
+    fetchJSON('https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json'),
+  ]);
+  return { obs, pred };
+}
+async function fetchSolarRegions() {
+  return fetchJSON('https://services.swpc.noaa.gov/json/solar_regions.json');
+}
+
+function renderSunspots(obs, pred) {
+  if(!obs||!obs.length) return;
+  const latest = obs[obs.length-1];
+  const ssn = parseFloat(latest['ssn'] || latest['ssn_sm'] || 0);
+  const f107 = parseFloat(latest['f10.7'] || 0);
+  const tag = latest['time-tag'] || '';
+
+  set('ssn-val', Math.round(ssn));
+  set('ssn-date', tag ? new Date(tag+'-01').toLocaleDateString('en-US',{month:'long',year:'numeric'}) : '--');
+  set('ssn-f107', f107.toFixed(1)+' sfu');
+
+  // Solar Cycle 25 status (peaked ~Jul 2025, now descending)
+  const now = new Date();
+  const peak = new Date('2025-07-01');
+  const min  = new Date('2019-12-01');
+  const pct  = Math.min(100, ((now-min)/(peak*1.5-min))*100);
+  const monthsFromPeak = Math.round((now-peak)/2629800000);
+  const statusText = monthsFromPeak < 0
+    ? `Approaching maximum (${Math.abs(monthsFromPeak)} months until predicted peak)`
+    : monthsFromPeak < 6
+    ? `Near maximum — elevated solar activity`
+    : `Post-maximum · ${monthsFromPeak} months past peak · descending phase`;
+  set('ssn-status', statusText);
+  const el=$('ssn-val');
+  if(el) el.style.color = ssn>150?'var(--red)':ssn>100?'var(--ember)':ssn>50?'var(--gold)':'var(--green)';
+
+  // Solar cycle chart
+  destroyChart('solarCycle');
+  const ctx = $('solar-cycle-chart');
+  if(!ctx) return;
+
+  // Use last 5 years of observed + 2 years future of predicted
+  const fiveYearsAgo = new Date(); fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear()-5);
+  const obsRecent = obs.filter(d => new Date(d['time-tag']+'-01') >= fiveYearsAgo);
+  const twoYearsAhead = new Date(); twoYearsAhead.setFullYear(twoYearsAhead.getFullYear()+2);
+  const predFuture = (pred||[]).filter(d => {
+    const dt = new Date(d['time-tag']+'-01');
+    return dt >= new Date() && dt <= twoYearsAhead;
+  });
+
+  const obsLabels = obsRecent.map(d=>d['time-tag']);
+  const obsVals   = obsRecent.map(d=>parseFloat(d['ssn_sm']||d['ssn']||0));
+  const predLabels = predFuture.map(d=>d['time-tag']);
+  const predMid  = predFuture.map(d=>parseFloat(d['predicted_ssn']||0));
+  const predMax  = predFuture.map(d=>parseFloat(d['predicted_ssn_max']||0));
+  const predMin  = predFuture.map(d=>parseFloat(d['predicted_ssn_min']||0));
+
+  const allLabels = [...obsLabels, ...predLabels];
+  const obsDataset = [...obsVals, ...new Array(predLabels.length).fill(null)];
+  const predMidDs  = [...new Array(obsLabels.length).fill(null), ...predMid];
+  const predMaxDs  = [...new Array(obsLabels.length).fill(null), ...predMax];
+  const predMinDs  = [...new Array(obsLabels.length).fill(null), ...predMin];
+
+  // Current date line
+  const nowTag = new Date().toISOString().slice(0,7);
+  const nowIdx = allLabels.findIndex(l=>l>=nowTag);
+
+  STATE.charts.solarCycle = new Chart(ctx, {
+    type:'line',
+    data:{ labels:allLabels, datasets:[
+      { label:'Observed SSN', data:obsDataset, borderColor:'#FF6B35', backgroundColor:'rgba(255,107,53,0.08)', fill:true, tension:0.3, borderWidth:2, pointRadius:0 },
+      { label:'Pred Max', data:predMaxDs, borderColor:'rgba(159,122,234,0.3)', backgroundColor:'rgba(159,122,234,0.08)', fill:'+1', tension:0.3, borderWidth:1, pointRadius:0, borderDash:[3,3] },
+      { label:'Pred Mid', data:predMidDs, borderColor:'rgba(159,122,234,0.7)', fill:false, tension:0.3, borderWidth:1.5, pointRadius:0, borderDash:[5,3] },
+      { label:'Pred Min', data:predMinDs, borderColor:'rgba(159,122,234,0.3)', backgroundColor:'rgba(0,0,0,0)', fill:false, tension:0.3, borderWidth:1, pointRadius:0, borderDash:[3,3] },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{display:false},
+        annotation: nowIdx>=0 ? {annotations:{now:{type:'line',xMin:nowIdx,xMax:nowIdx,borderColor:'var(--sky)',borderWidth:1.5,borderDash:[5,3]}}} : {}
+      },
+      scales:{
+        x:{grid:{color:CD.grid},ticks:{font:{family:CD.mono,size:9},color:CD.tick,maxTicksLimit:10,callback:(_,i)=>allLabels[i]&&allLabels[i].endsWith('-01')?allLabels[i].slice(0,4):''}},
+        y:{min:0,grid:{color:CD.grid},ticks:{font:{family:CD.mono,size:9},color:'#FF6B35'}}
+      }
+    }
+  });
+}
+
+function renderSolarRegions(data) {
+  const panel = $('solar-regions-panel'); if(!panel) return;
+  if(!data||!data.length){ panel.innerHTML='<div class="err">No active regions reported</div>'; return; }
+  const magRisk = {
+    'alpha':'var(--green)', 'beta':'var(--gold)', 'beta-gamma':'var(--ember)',
+    'beta-gamma-delta':'var(--red)', 'gamma':'var(--red)', 'delta':'var(--red)',
+  };
+  const flareText = (mc) => {
+    const m = mc.toLowerCase();
+    if(m.includes('delta')) return 'High — X-class possible';
+    if(m.includes('gamma')) return 'High — X-class possible';
+    if(m.includes('beta-gamma')) return 'Moderate — M-class possible';
+    if(m.includes('beta')) return 'Low — C-class possible';
+    return 'Minimal';
+  };
+  panel.innerHTML = data.slice(0,8).map(r => {
+    const mc = (r.mag_type||r.magnetic_type||'alpha').toLowerCase();
+    const col = Object.entries(magRisk).find(([k])=>mc.includes(k))?.[1] || 'var(--muted2)';
+    return `<div class="ar-row">
+      <div>
+        <div class="ar-num">AR ${r.station_number||r.region||'?'} <span style="font-size:11px;color:var(--muted2);font-weight:400">${r.location||''}</span></div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:2px">${flareText(mc)} · ${r.spot_count||0} spots</div>
+      </div>
+      <div style="text-align:right">
+        <span class="ar-class" style="background:${col}22;color:${col}">${mc.toUpperCase()}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// NEAR-EARTH OBJECTS + ISS
+// ═══════════════════════════════════════════════════
+async function fetchNEO() {
+  const today = new Date(), end = new Date(today.getTime()+7*86400000);
+  const fmt = d => d.toISOString().slice(0,10);
+  return fetchJSON(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${fmt(today)}&end_date=${fmt(end)}&api_key=DEMO_KEY`);
+}
+async function fetchISS() {
+  return fetchJSON('https://api.wheretheiss.at/v1/satellites/25544');
+}
+
+function renderNEO(data) {
+  const panel = $('neo-panel'); if(!panel) return;
+  if(!data||!data.near_earth_objects){ panel.innerHTML='<div class="err">No NEO data</div>'; return; }
+  const allNeos = Object.values(data.near_earth_objects).flat()
+    .sort((a,b) => {
+      const da = parseFloat(a.close_approach_data[0]?.miss_distance?.lunar||99);
+      const db = parseFloat(b.close_approach_data[0]?.miss_distance?.lunar||99);
+      return da - db;
+    });
+  if(!allNeos.length){ panel.innerHTML='<div class="err">No close approaches this week</div>'; return; }
+  panel.innerHTML = allNeos.slice(0,6).map(n => {
+    const ca = n.close_approach_data[0];
+    const ld = parseFloat(ca?.miss_distance?.lunar||0).toFixed(2);
+    const km = parseInt(ca?.miss_distance?.kilometers||0).toLocaleString();
+    const vel = parseFloat(ca?.relative_velocity?.kilometers_per_second||0).toFixed(1);
+    const dMin = Math.round(n.estimated_diameter?.meters?.estimated_diameter_min||0);
+    const dMax = Math.round(n.estimated_diameter?.meters?.estimated_diameter_max||0);
+    const pha = n.is_potentially_hazardous_asteroid;
+    const date = ca?.close_approach_date_full?.slice(0,10) || '--';
+    return `<div class="neo-row" style="border-left:2px solid ${pha?'var(--red)':'var(--border2)'}">
+      <div class="neo-name">${pha?'⚠️ ':''}${n.name.replace(/[()]/g,'')}
+        ${pha?'<span style="font-family:var(--mono);font-size:9px;color:var(--red);margin-left:6px">PHA</span>':''}
+      </div>
+      <div class="neo-stats">
+        <span class="neo-stat">📅 ${date}</span>
+        <span class="neo-stat" style="color:${parseFloat(ld)<5?'var(--ember)':'var(--muted2)'}">🌕 ${ld} LD</span>
+        <span class="neo-stat">${km} km</span>
+        <span class="neo-stat">⚡ ${vel} km/s</span>
+        <span class="neo-stat">📏 ${dMin}–${dMax}m</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let issMap = null; let issMarker = null;
+function initISSMap() {
+  if(issMap||!window.L) return;
+  issMap = L.map('iss-map',{zoomControl:false,attributionControl:false}).setView([0,0],1);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    {subdomains:'abcd',maxZoom:18}).addTo(issMap);
+  const issIcon = L.divIcon({html:'<div style="font-size:22px;line-height:1;transform:translate(-50%,-50%)">🛸</div>',className:'',iconSize:[28,28]});
+  issMarker = L.marker([0,0],{icon:issIcon}).addTo(issMap);
+}
+function renderISS(data) {
+  if(!data) return;
+  initISSMap();
+  const lat=parseFloat(data.latitude), lng=parseFloat(data.longitude);
+  const alt=parseFloat(data.altitude).toFixed(1);
+  const vel=(parseFloat(data.velocity)/1000).toFixed(1);
+  set('iss-lat', lat.toFixed(3)+'°');
+  set('iss-lng', lng.toFixed(3)+'°');
+  set('iss-alt', alt+' km');
+  set('iss-vel', vel+' km/s');
+  set('iss-visibility', data.visibility==='daylight'?'☀️ Sunlit':'🌑 Eclipse');
+  set('iss-updated', 'Live · '+new Date().toLocaleTimeString());
+  if(issMarker) issMarker.setLatLng([lat,lng]);
+  if(issMap) issMap.setView([lat,lng],issMap.getZoom());
+}
+function startISSTracking() {
+  fetchISS().then(renderISS).catch(console.error);
+  setInterval(()=>fetchISS().then(renderISS).catch(console.error), 30000);
+}
+
+// ═══════════════════════════════════════════════════
+// GEOMAGNETIC FORECAST + FIREBALLS
+// ═══════════════════════════════════════════════════
+async function fetchGeoForecast() {
+  return fetchJSON('https://services.swpc.noaa.gov/products/noaa-geomagnetic-forecast.json');
+}
+async function fetchFireballs() {
+  return fetchJSON('https://ssd-api.jpl.nasa.gov/fireball.api?limit=10&req-loc=true');
+}
+
+function renderGeoForecast(raw) {
+  const textEl=$('geo-forecast-text'); const ctx=$('geo-forecast-chart');
+  if(!raw||!Array.isArray(raw)||raw.length<2) { if(textEl) textEl.textContent='No forecast data'; return; }
+  const rows = raw.slice(1).filter(r=>Array.isArray(r));
+  const labels=rows.map(r=>r[0]?r[0].slice(5,10):'-');
+  const vals=rows.map(r=>parseFloat(r[1]||r[2]||0)).filter(v=>!isNaN(v));
+  if(!vals.length) return;
+  const lbls=labels.slice(0,vals.length);
+  if(textEl) {
+    const max=Math.max(...vals);
+    textEl.textContent=`Peak forecast: Kp ${max.toFixed(1)} — ${kpLabel(max)}`;
+    textEl.style.color=kpColor(max);
+  }
+  destroyChart('geoForecast');
+  if(ctx) STATE.charts.geoForecast=new Chart(ctx,{
+    type:'bar',
+    data:{labels:lbls,datasets:[{data:vals,backgroundColor:vals.map(v=>kpColor(v)+'99'),borderColor:vals.map(v=>kpColor(v)),borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{font:{family:CD.mono,size:9},color:CD.tick}},
+        y:{min:0,max:9,grid:{color:CD.grid},ticks:{font:{family:CD.mono,size:9},color:CD.tick}}}}
+  });
+}
+
+function renderFireballs(data) {
+  const panel=$('fireball-panel'); if(!panel) return;
+  if(!data||!data.data||!data.data.length){ panel.innerHTML='<div class="err">No recent fireball data</div>'; return; }
+  const fields=data.fields||[];
+  const iDate=fields.indexOf('date'), iEng=fields.indexOf('energy'), iLat=fields.indexOf('lat'), iLatD=fields.indexOf('lat-dir'), iLon=fields.indexOf('lon'), iLonD=fields.indexOf('lon-dir'), iAlt=fields.indexOf('alt'), iVel=fields.indexOf('vel');
+  panel.innerHTML=data.data.slice(0,8).map(row=>{
+    const date=row[iDate]||'--', eng=row[iEng]||'--', lat=row[iLat], latD=row[iLatD], lon=row[iLon], lonD=row[iLonD], alt=row[iAlt]||'--', vel=row[iVel]||'--';
+    const loc=(lat&&lon)?`${parseFloat(lat).toFixed(1)}°${latD} ${parseFloat(lon).toFixed(1)}°${lonD}`:'Unknown';
+    const energy=parseFloat(eng)||0;
+    const col=energy>100?'var(--red)':energy>10?'var(--ember)':'var(--gold)';
+    return `<div class="fb-row">
+      <div>
+        <div style="font-size:12px;color:#fff">☄️ ${date.slice(0,10)}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">${loc} · ${alt} km alt</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:${col}">${eng}×10¹⁰ J</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted2)">${vel} km/s</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Filter button wiring for events
+function initEventFilters() {
+  document.querySelectorAll('.evt-filter-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    applyEventFilter(btn.dataset.evtFilter);
+  }));
+}
+
 // MAIN LOAD
 async function loadAll() {
   const dot=$('live-dot'), upd=$('last-updated');
@@ -2235,12 +2717,15 @@ async function loadAll() {
   renderPlanetary();
   renderNightSky();
   renderStellarEvents();
+  initEventFilters();
 
   const results = await Promise.allSettled([
     fetchWeather(), fetchSolar(), fetchTides(),
     fetchKp(), fetchSolarWind(), fetchFlares(), fetchSwpcAlerts(),
+    fetchExtremeEvents(), fetchSolarCycle(), fetchSolarRegions(),
+    fetchNEO(), fetchGeoForecast(), fetchFireballs(),
   ]);
-  const [weather, solar, tides, kp, sw, flares, swpcAlerts] = results;
+  const [weather, solar, tides, kp, sw, flares, swpcAlerts, extremeEvts, solarCycle, solarRegions, neoData, geoFcast, fireballs] = results;
 
   if(weather.status==='fulfilled') { try{ renderWeather(weather.value); }catch(e){ console.error('weather',e); } }
   else { console.error('Weather failed:',weather.reason); set('cur-cond','Data unavailable'); }
@@ -2264,9 +2749,19 @@ async function loadAll() {
   if(flares.status==='fulfilled') { try{ renderFlares(flares.value); }catch(e){ console.error('flares',e); } }
   if(swpcAlerts.status==='fulfilled') { try{ renderSwpcAlerts(swpcAlerts.value); }catch(e){ console.error('swpc',e); } }
 
+  if(extremeEvts.status==='fulfilled') { try{ renderExtremeEvents(extremeEvts.value); }catch(e){ console.error('events',e); } }
+  else { try{ renderExtremeEvents({eonet:null,quakes:null,nhc:null}); }catch(e){} }
+
+  if(solarCycle.status==='fulfilled') {
+    try{ const sc=solarCycle.value; renderSunspots(sc.obs,sc.pred); }catch(e){ console.error('solar-cycle',e); }
+  }
+  if(solarRegions.status==='fulfilled') { try{ renderSolarRegions(solarRegions.value); }catch(e){ console.error('solar-regions',e); } }
+  if(neoData.status==='fulfilled') { try{ renderNEO(neoData.value); }catch(e){ console.error('neo',e); } }
+  if(geoFcast.status==='fulfilled') { try{ renderGeoForecast(geoFcast.value); }catch(e){ console.error('geo-fcast',e); } }
+  if(fireballs.status==='fulfilled') { try{ renderFireballs(fireballs.value); }catch(e){ console.error('fireballs',e); } }
+
   try {
     const nwsA = await fetchNwsAlerts(); renderNwsAlerts(nwsA);
-    const afd  = await fetchAfd();       renderAfd(afd);
   } catch(e) {
     const ap=$('alerts-panel'); if(ap) ap.innerHTML='<div class="err">NWS data: US locations only</div>';
     const at=$('afd-text'); if(at) at.innerHTML='<span class="err">Area Forecast Discussion is only available for US coordinates.</span>';
@@ -2309,6 +2804,7 @@ if(STATE.useFahrenheit) $('btn-unit').classList.add('on');
 loadAll();
 startAutoRefresh();
 initMaps();
+startISSTracking();
 </script>
 </body>
 </html>
