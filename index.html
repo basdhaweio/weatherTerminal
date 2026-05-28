@@ -393,12 +393,9 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
         <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted2)">
           <span>Daily change</span><span style="font-family:var(--mono);font-size:12px" id="tl-daychange">--</span>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 8px;background:rgba(200,151,74,0.06);border-radius:4px;border:1px solid rgba(200,151,74,0.12)">
-          <span style="font-size:12px;color:var(--muted2)">Solar Declination</span>
-          <div style="text-align:right">
-            <span style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold)" id="tl-solar-decl">--</span>
-            <div style="font-family:var(--mono);font-size:9px;color:var(--muted2);margin-top:1px" id="tl-solar-decl-note">--</div>
-          </div>
+        <div style="padding:4px 0 2px">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px;text-align:center">Solar Declination</div>
+          <canvas id="decl-gauge" style="display:block;width:100%;height:auto" width="280" height="130"></canvas>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:8px 10px;background:rgba(159,122,234,0.07);border:1px solid rgba(159,122,234,0.15);border-radius:5px">
           <div>
@@ -1175,8 +1172,7 @@ function renderWeather(data) {
   const absHum=(6.112*Math.exp(17.67*Tc/(Tc+243.5))*c.relative_humidity_2m*2.1674/(273.15+Tc)).toFixed(1);
   set('cf-abshum', absHum+' g/m³');
 
-  set('tl-solar-decl', decl.toFixed(2)+'°');
-  set('tl-solar-decl-note', decl>0.5?'☀ N hemisphere':decl<-0.5?'☀ S hemisphere':'⚖ Near equator');
+  drawDeclGauge('decl-gauge', decl);
 }
 
 function renderSolar(data) {
@@ -2713,6 +2709,178 @@ function initEventFilters() {
   document.querySelectorAll('.evt-filter-btn').forEach(btn=>btn.addEventListener('click',()=>{
     applyEventFilter(btn.dataset.evtFilter);
   }));
+}
+
+
+// ═══════════════════════════════════════════════════
+// SOLAR DECLINATION GAUGE (speedometer-style arc)
+// Arc spans from -23.45° (winter solstice) through 0° (equinox) to +23.45° (summer solstice)
+// Canvas coords: 0°=right, 90°=down, 180°=left, 270°=up (Y-axis inverted)
+// Top semicircle: ctx.arc(cx,cy,r, Math.PI, 2*Math.PI, false) — clockwise from left→up→right
+// ═══════════════════════════════════════════════════
+function drawDeclGauge(canvasId, declDeg) {
+  const cv = document.getElementById(canvasId);
+  if(!cv || !cv.getContext) return;
+
+  // Respect devicePixelRatio for crisp rendering on retina
+  const dpr = window.devicePixelRatio || 1;
+  const ATTR_W = 280, ATTR_H = 130;
+  cv.width  = ATTR_W * dpr;
+  cv.height = ATTR_H * dpr;
+  cv.style.width  = ATTR_W + 'px';
+  cv.style.height = ATTR_H + 'px';
+
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const W = ATTR_W, H = ATTR_H;
+  const cx = W / 2;
+  const cy = H - 12;            // pivot near bottom
+  const r  = Math.min(cx - 22, cy - 8); // ~118px
+
+  ctx.clearRect(0, 0, W, H);
+
+  const MIN = -23.45, MAX = 23.45, RANGE = MAX - MIN;
+  const clamp = Math.max(MIN, Math.min(MAX, declDeg));
+  const pct   = (clamp - MIN) / RANGE;                // 0 = winter, 1 = summer
+  const needle = Math.PI + pct * Math.PI;              // π → 2π (left→top→right)
+
+  // ── 1. Background track ──
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, Math.PI, 2 * Math.PI, false);
+  ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+  ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.stroke();
+
+  // ── 2. Gradient colored arc (sky-blue → teal → green → gold → ember) ──
+  const palette = [
+    [79, 195, 247],   // #4FC3F7  sky (winter solstice)
+    [72, 187, 120],   // #48BB78  green (equinox)
+    [255, 107,  53],  // #FF6B35  ember (summer solstice)
+  ];
+  function lerpColor(t) {
+    // t: 0→1 — blend through 3 stops
+    if (t < 0.5) {
+      const s = t * 2;
+      return palette[0].map((v, i) => Math.round(v + (palette[1][i] - v) * s));
+    } else {
+      const s = (t - 0.5) * 2;
+      return palette[1].map((v, i) => Math.round(v + (palette[2][i] - v) * s));
+    }
+  }
+  const SEG = 100;
+  for (let i = 0; i < SEG; i++) {
+    const t  = i / SEG;
+    const a1 = Math.PI + t * Math.PI;
+    const a2 = Math.PI + (i + 1) / SEG * Math.PI;
+    const [rc, gc, bc] = lerpColor(t);
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, a1, a2, false);
+    ctx.strokeStyle = `rgb(${rc},${gc},${bc})`;
+    ctx.lineWidth = 14; ctx.lineCap = 'butt'; ctx.stroke();
+  }
+
+  // ── 3. Tick marks ──
+  const TICKS = [
+    { d: -23.45, major: true,  label: null },
+    { d: -20,    major: false, label: null },
+    { d: -15,    major: false, label: null },
+    { d: -10,    major: false, label: null },
+    { d:  -5,    major: false, label: null },
+    { d:   0,    major: true,  label: null },
+    { d:   5,    major: false, label: null },
+    { d:  10,    major: false, label: null },
+    { d:  15,    major: false, label: null },
+    { d:  20,    major: false, label: null },
+    { d:  23.45, major: true,  label: null },
+  ];
+  TICKS.forEach(({ d, major }) => {
+    const tp = (d - MIN) / RANGE;
+    const th = Math.PI + tp * Math.PI;
+    const inner = r - (major ? 20 : 10);
+    const outer = r + 5;
+    ctx.beginPath();
+    ctx.moveTo(cx + inner * Math.cos(th), cy + inner * Math.sin(th));
+    ctx.lineTo(cx + outer * Math.cos(th), cy + outer * Math.sin(th));
+    ctx.strokeStyle = major ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.18)';
+    ctx.lineWidth = major ? 2 : 1; ctx.stroke();
+  });
+
+  // ── 4. Fixed edge labels (solstices + equinox) ──
+  ctx.font = `${9 * dpr / dpr}px "Space Mono", monospace`; // 9px
+  ctx.textBaseline = 'middle';
+
+  // Winter solstice — left end of arc
+  ctx.fillStyle = 'rgba(79,195,247,0.7)';
+  ctx.textAlign = 'right';
+  ctx.fillText('−23.4°', cx - r - 8, cy - 2);
+
+  // Equinox — top of arc
+  const eqx = cx + (r - 24) * Math.cos(3 * Math.PI / 2);  // top: angle = 3π/2
+  const eqy = cy + (r - 24) * Math.sin(3 * Math.PI / 2);
+  ctx.fillStyle = 'rgba(72,187,120,0.85)';
+  ctx.textAlign = 'center';
+  ctx.fillText('0°', eqx, eqy);
+
+  // Summer solstice — right end
+  ctx.fillStyle = 'rgba(255,107,53,0.7)';
+  ctx.textAlign = 'left';
+  ctx.fillText('+23.4°', cx + r + 8, cy - 2);
+
+  // ── 5. Current value + hemisphere text (center of arc interior) ──
+  const valY = cy - r * 0.48;
+  const [vc_r, vc_g, vc_b] = lerpColor(pct);
+  ctx.fillStyle = `rgb(${vc_r},${vc_g},${vc_b})`;
+  ctx.font = `bold 18px "Space Mono", monospace`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText((declDeg >= 0 ? '+' : '') + declDeg.toFixed(2) + '°', cx, valY);
+
+  const hemiLabel = declDeg > 0.2 ? '☀ N hemisphere'
+                  : declDeg < -0.2 ? '☀ S hemisphere'
+                  : '⚖ At equator';
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.font = `9px "Space Mono", monospace`;
+  ctx.fillText(hemiLabel, cx, valY + 18);
+
+  // ── 6. Season indicators ──
+  const seasonY = cy - r * 0.18;
+  ctx.font = `8px "Space Mono", monospace`;
+  ctx.fillStyle = 'rgba(79,195,247,0.45)';
+  ctx.textAlign = 'right';
+  ctx.fillText('Winter Solst.', cx - r * 0.18, seasonY);
+  ctx.fillStyle = 'rgba(255,107,53,0.45)';
+  ctx.textAlign = 'left';
+  ctx.fillText('Summer Solst.', cx + r * 0.18, seasonY);
+
+  // ── 7. Needle ──
+  const nx = cx + (r - 6) * Math.cos(needle);
+  const ny = cy + (r - 6) * Math.sin(needle);
+  // Tail (short, opposite direction)
+  const tx = cx + 12 * Math.cos(needle + Math.PI);
+  const ty = cy + 12 * Math.sin(needle + Math.PI);
+
+  // Shadow
+  ctx.beginPath();
+  ctx.moveTo(tx, ty); ctx.lineTo(nx, ny);
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+  ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.stroke();
+
+  // Needle body
+  ctx.beginPath();
+  ctx.moveTo(tx, ty); ctx.lineTo(nx, ny);
+  const [nr, ng, nb] = lerpColor(pct);
+  ctx.strokeStyle = `rgb(${nr},${ng},${nb})`;
+  ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.stroke();
+
+  // Needle tip bright spot
+  ctx.beginPath();
+  ctx.arc(nx, ny, 3, 0, Math.PI * 2);
+  ctx.fillStyle = `rgb(${nr},${ng},${nb})`; ctx.fill();
+
+  // Pivot cap
+  ctx.beginPath();
+  ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+  ctx.fillStyle = '#fff'; ctx.fill();
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1; ctx.stroke();
 }
 
 // MAIN LOAD
