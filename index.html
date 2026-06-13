@@ -361,12 +361,16 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
           </div>
         </div>
         <div style="padding-top:12px;border-top:1px solid var(--border)">
-          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px">Pressure Tendency</div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="font-family:var(--mono);font-size:26px;font-weight:700;color:#fff" id="cf-pres-mmhg">--</div>
-            <div>
-              <div style="font-size:11px;color:var(--muted2)" id="cf-pres-hpa">-- hPa</div>
-              <div style="font-size:13px;margin-top:2px" id="cf-pres-trend">→ Steady</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="kpi-box">
+              <div class="kpi-l">Cloud Base (LCL)</div>
+              <div class="kpi-v" id="cf-cloudbase" style="color:var(--sky)">--</div>
+              <div style="font-size:11px;color:var(--muted2);margin-top:2px" id="cf-cloudbase-ft">--</div>
+            </div>
+            <div class="kpi-box">
+              <div class="kpi-l">Absolute Humidity</div>
+              <div class="kpi-v" id="cf-abshum" style="color:var(--purple)">--</div>
+              <div style="font-size:11px;color:var(--muted2);margin-top:2px">g/m³ actual vapor</div>
             </div>
           </div>
         </div>
@@ -836,7 +840,7 @@ const CONFIG = {
 const MAP = {
   leaflet:null, radarFrames:[], radarLayers:[], radarIdx:0,
   radarPlaying:false, radarTimer:null,
-  windyOverlay:'pressure', windyLevel:'surface', windyModel:'ecmwf',
+  windyOverlay:'pressure', windyLevel:'surface', windyModel:'gfs',
   vtkLayer:'waves', vtkSatLayer:'clouds-surface',
 };
 
@@ -1172,7 +1176,7 @@ function renderWeather(data) {
   const absHum=(6.112*Math.exp(17.67*Tc/(Tc+243.5))*c.relative_humidity_2m*2.1674/(273.15+Tc)).toFixed(1);
   set('cf-abshum', absHum+' g/m³');
 
-  drawDeclGauge('decl-gauge', decl);
+  // gauge drawn separately via drawDeclGaugeNow()
 }
 
 function renderSolar(data) {
@@ -2216,7 +2220,7 @@ async function loadRainViewer() {
     MAP.radarLayers.forEach(l=>MAP.leaflet.removeLayer(l));
     MAP.radarFrames.forEach((frame,i)=>{
       const layer=L.tileLayer(host+frame.path+'/512/{z}/{x}/{y}/4/1_1.png',{
-        tileSize:512, opacity:i===MAP.radarIdx?0.65:0, zIndex:3
+        tileSize:512, zoomOffset:-1, opacity:i===MAP.radarIdx?0.65:0, zIndex:3
       });
       layer.addTo(MAP.leaflet);
       MAP.radarLayers.push(layer);
@@ -2261,7 +2265,7 @@ function initRadarControls(){
 
 async function fetchWindyModels() {
   if(!CONFIG.windyApiKey) return;
-  const models=['ecmwf','gfs','namConus'];
+  const models=['gfs','namConus']; // ECMWF requires Windy paid tier — removed
   const results=await Promise.allSettled(models.map(model=>
     fetch('https://api.windy.com/api/point-forecast/v2',{
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -2274,8 +2278,8 @@ async function fetchWindyModels() {
   const grid=document.getElementById('model-compare-grid');
   if(badge)badge.style.display='inline';
   if(strip)strip.style.display='block';
-  const modelLabels={ecmwf:'ECMWF',gfs:'NOAA GFS',namConus:'NAM CONUS'};
-  const modelColors={ecmwf:'var(--sky)',gfs:'var(--green)',namConus:'var(--gold)'};
+  const modelLabels={gfs:'NOAA GFS',namConus:'NAM CONUS'};
+  const modelColors={gfs:'var(--green)',namConus:'var(--gold)'};
   const cards=results.map(r=>{
     if(r.status!=='fulfilled'||!r.value.data)return'';
     const{model,data}=r.value;
@@ -2718,6 +2722,12 @@ function initEventFilters() {
 // Canvas coords: 0°=right, 90°=down, 180°=left, 270°=up (Y-axis inverted)
 // Top semicircle: ctx.arc(cx,cy,r, Math.PI, 2*Math.PI, false) — clockwise from left→up→right
 // ═══════════════════════════════════════════════════
+
+function drawDeclGaugeNow() {
+  const decl = solarDecl(new Date());
+  drawDeclGauge('decl-gauge', decl);
+}
+
 function drawDeclGauge(canvasId, declDeg) {
   const cv = document.getElementById(canvasId);
   if(!cv || !cv.getContext) return;
@@ -2891,6 +2901,7 @@ async function loadAll() {
 
   renderMoon();
   renderPlanetary();
+  drawDeclGaugeNow();
   renderNightSky();
   renderStellarEvents();
   initEventFilters();
